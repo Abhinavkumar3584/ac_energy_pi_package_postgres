@@ -8,6 +8,8 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import RestartAltRoundedIcon from '@mui/icons-material/RestartAltRounded';
+import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
+import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import { useApp } from '../../context/AppContext';
 
 const THEME_PRESETS = [
@@ -33,6 +35,9 @@ const SITE_PRESETS = [
 
 export default function SettingsView() {
   const {
+    theme,
+    setTheme,
+    applyThemeAccent,
     settings,
     setSettings,
     siteProfile,
@@ -372,6 +377,80 @@ export default function SettingsView() {
       {/* Tab 3: Appearance & Theme Presets */}
       {activeTab === 'appearance' && (
         <div className="flex flex-col gap-3.5">
+          {/* Section 1: Display Mode (Light vs Dark) */}
+          <div className="glass-card p-3.5 flex flex-col gap-3.5">
+            <div>
+              <h3 className="text-sm font-extrabold text-slate-900 dark:text-white uppercase tracking-wider">
+                Display Theme Mode
+              </h3>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <button
+                type="button"
+                onClick={() => {
+                  setTheme('light');
+                  setSettings((prev) => ({ ...prev, themeMode: 'light' }));
+                  triggerToast('Switched to Day Light Mode!');
+                }}
+                className={`p-3.5 rounded-xl border flex items-center justify-between transition-all text-left cursor-pointer ${
+                  theme === 'light'
+                    ? 'bg-amber-50/80 border-amber-500 shadow-sm ring-2 ring-amber-500/20'
+                    : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/60'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950/60 flex items-center justify-center text-amber-600 dark:text-amber-400 flex-shrink-0">
+                    <LightModeRoundedIcon sx={{ fontSize: 22 }} />
+                  </div>
+                  <div>
+                    <span className="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-white block">
+                      Day Light Mode
+                    </span>
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400 block mt-0.5">
+                      Clean high-contrast porcelain background
+                    </span>
+                  </div>
+                </div>
+                {theme === 'light' && (
+                  <CheckCircleRoundedIcon sx={{ fontSize: 20, color: '#D97706' }} />
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setTheme('dark');
+                  setSettings((prev) => ({ ...prev, themeMode: 'dark' }));
+                  triggerToast('Switched to Night Cinematic Mode!');
+                }}
+                className={`p-3.5 rounded-xl border flex items-center justify-between transition-all text-left cursor-pointer ${
+                  theme === 'dark'
+                    ? 'bg-blue-50/80 dark:bg-slate-800/90 border-blue-500 shadow-sm ring-2 ring-blue-500/20'
+                    : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/60'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-slate-900 border border-indigo-200 dark:border-slate-700 flex items-center justify-center text-indigo-600 dark:text-blue-400 flex-shrink-0">
+                    <DarkModeRoundedIcon sx={{ fontSize: 22 }} />
+                  </div>
+                  <div>
+                    <span className="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-white block">
+                      Night Cinematic Mode
+                    </span>
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400 block mt-0.5">
+                      Obsidian dark slate for control rooms
+                    </span>
+                  </div>
+                </div>
+                {theme === 'dark' && (
+                  <CheckCircleRoundedIcon sx={{ fontSize: 20, color: '#3B82F6' }} />
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Section 2: 9 One-Click Color & Aesthetic Presets */}
           <div className="glass-card p-3.5 flex flex-col gap-3.5">
             <div>
               <h3 className="text-sm font-extrabold text-slate-900 dark:text-white uppercase tracking-wider">
@@ -380,39 +459,108 @@ export default function SettingsView() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-              {THEME_PRESETS.map((preset) => (
-                <button
-                  key={preset.id}
-                  type="button"
-                  onClick={() => {
-                    setSettings({ ...settings, themePreset: preset.id, accentColor: preset.accent });
-                    triggerToast(`Applied ${preset.name} theme!`);
-                  }}
-                  className={`p-3.5 rounded-xl border flex items-center justify-between transition-all ${
-                    settings.themePreset === preset.id
-                      ? 'bg-blue-50/80 dark:bg-blue-950/60 border-blue-600 shadow-sm ring-2 ring-blue-500/20'
-                      : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/60'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`w-6 h-6 rounded-lg bg-gradient-to-br ${preset.colorClass} shadow-xs flex-shrink-0`}
-                    />
-                    <div className="text-left">
-                      <span className="font-extrabold text-xs text-slate-900 dark:text-white block leading-tight">
-                        {preset.name}
-                      </span>
-                      <span className="text-[10px] text-slate-400 font-mono">
-                        {preset.accent}
-                      </span>
+              {THEME_PRESETS.map((preset) => {
+                const isSelected = settings.themePreset === preset.id || settings.accentColor?.toLowerCase() === preset.accent.toLowerCase();
+                return (
+                  <button
+                    key={preset.id}
+                    type="button"
+                    onClick={() => {
+                      const updated = {
+                        ...settings,
+                        themePreset: preset.id,
+                        accentColor: preset.accent,
+                        iconColor: preset.accent,
+                        kpiColor: preset.accent,
+                        roomCardColor: preset.accent,
+                      };
+                      setSettings(updated);
+                      if (applyThemeAccent) applyThemeAccent(preset.accent);
+                      triggerToast(`Applied ${preset.name} theme!`);
+                    }}
+                    className={`p-3.5 rounded-xl border flex items-center justify-between transition-all cursor-pointer ${
+                      isSelected
+                        ? 'bg-blue-50/80 dark:bg-blue-950/60 border-blue-600 shadow-sm ring-2 ring-blue-500/20'
+                        : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/60'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span
+                        className={`w-6 h-6 rounded-lg bg-gradient-to-br ${preset.colorClass} shadow-xs flex-shrink-0`}
+                      />
+                      <div className="text-left">
+                        <span className="font-extrabold text-xs text-slate-900 dark:text-white block leading-tight">
+                          {preset.name}
+                        </span>
+                        <span className="text-[10px] text-slate-400 font-mono">
+                          {preset.accent}
+                        </span>
+                      </div>
                     </div>
-                  </div>
 
-                  {settings.themePreset === preset.id && (
-                    <CheckCircleRoundedIcon sx={{ fontSize: 18, color: '#2563EB' }} />
-                  )}
+                    {isSelected && (
+                      <CheckCircleRoundedIcon sx={{ fontSize: 18, color: preset.accent }} />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Section 3: Custom Accent Color Picker & Live Preview */}
+          <div className="glass-card p-3.5 flex flex-col gap-3.5">
+            <div>
+              <h3 className="text-sm font-extrabold text-slate-900 dark:text-white uppercase tracking-wider">
+                Custom Accent &amp; Live Preview
+              </h3>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 items-center">
+              {/* Color picker input box */}
+              <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700">
+                <input
+                  type="color"
+                  value={settings.accentColor || '#4F46E5'}
+                  onChange={(e) => {
+                    const newColor = e.target.value;
+                    const updated = {
+                      ...settings,
+                      themePreset: 'custom',
+                      accentColor: newColor,
+                      iconColor: newColor,
+                      kpiColor: newColor,
+                      roomCardColor: newColor,
+                    };
+                    setSettings(updated);
+                    if (applyThemeAccent) applyThemeAccent(newColor);
+                  }}
+                  className="w-10 h-10 rounded-lg cursor-pointer border-0 bg-transparent"
+                />
+                <div className="flex-1">
+                  <span className="text-xs font-bold text-slate-900 dark:text-white block">
+                    Pick Any Custom Hex Color
+                  </span>
+                  <span className="text-xs font-mono font-bold text-slate-500 dark:text-slate-400">
+                    {settings.accentColor || '#4F46E5'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Live Preview Elements */}
+              <div className="flex items-center gap-2.5 p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 flex-wrap">
+                <button
+                  type="button"
+                  className="px-3.5 py-1.5 rounded-xl bg-blue-600 text-white font-bold text-xs shadow-xs"
+                >
+                  Primary CTA
                 </button>
-              ))}
+                <span className="px-2.5 py-1 rounded-lg bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 font-bold text-xs border border-blue-200 dark:border-blue-700/50">
+                  Active Chip
+                </span>
+                <span className="text-xs font-extrabold text-blue-600 dark:text-blue-400">
+                  Live Metric Value
+                </span>
+              </div>
             </div>
           </div>
         </div>

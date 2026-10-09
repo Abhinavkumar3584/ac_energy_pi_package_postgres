@@ -290,6 +290,29 @@ const DEFAULT_AUTOMATION = DEFAULT_ROOMS.map((r) => ({
   },
 }));
 
+export function applyThemeAccent(accentHex) {
+  if (!accentHex) return;
+  let r = 79, g = 70, b = 229;
+  if (accentHex.startsWith('#') && accentHex.length >= 7) {
+    r = parseInt(accentHex.slice(1, 3), 16) || 79;
+    g = parseInt(accentHex.slice(3, 5), 16) || 70;
+    b = parseInt(accentHex.slice(5, 7), 16) || 229;
+  }
+  const hoverR = Math.max(0, Math.floor(r * 0.85));
+  const hoverG = Math.max(0, Math.floor(g * 0.85));
+  const hoverB = Math.max(0, Math.floor(b * 0.85));
+  const hoverHex = `#${hoverR.toString(16).padStart(2, '0')}${hoverG.toString(16).padStart(2, '0')}${hoverB.toString(16).padStart(2, '0')}`;
+
+  const root = document.documentElement;
+  root.style.setProperty('--app-accent', accentHex);
+  root.style.setProperty('--app-accent-hover', hoverHex);
+  root.style.setProperty('--app-accent-rgb', `${r}, ${g}, ${b}`);
+  root.style.setProperty('--app-accent-light', `rgba(${r}, ${g}, ${b}, 0.12)`);
+  root.style.setProperty('--app-accent-subtle', `rgba(${r}, ${g}, ${b}, 0.06)`);
+  root.style.setProperty('--app-accent-border', `rgba(${r}, ${g}, ${b}, 0.35)`);
+  root.style.setProperty('--app-accent-ring', `rgba(${r}, ${g}, ${b}, 0.25)`);
+}
+
 export function AppProvider({ children }) {
   // Theme State: 'light' | 'dark' (defaults to saved or light)
   const [theme, setTheme] = useState(() => {
@@ -335,43 +358,77 @@ export function AppProvider({ children }) {
   const [automationRules, setAutomationRules] = useState(DEFAULT_AUTOMATION);
 
   // Site Profile & Working Hours
-  const [siteProfile, setSiteProfile] = useState({
-    type: 'office',
-    name: 'Main Corporate Office',
-    after_hours: 'warning',
-    gauge_basis: 'hours',
-    week: {
-      mon: { enabled: true, start: '09:00', end: '19:00' },
-      tue: { enabled: true, start: '09:00', end: '19:00' },
-      wed: { enabled: true, start: '09:00', end: '19:00' },
-      thu: { enabled: true, start: '09:00', end: '19:00' },
-      fri: { enabled: true, start: '09:00', end: '19:00' },
-      sat: { enabled: false, start: '10:00', end: '15:00' },
-      sun: { enabled: false, start: '10:00', end: '15:00' },
-    },
+  const [siteProfile, setSiteProfile] = useState(() => {
+    try {
+      const saved = localStorage.getItem('ac_energy_site_profile');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.warn(e);
+    }
+    return {
+      type: 'office',
+      name: 'Main Corporate Office',
+      after_hours: 'warning',
+      gauge_basis: 'hours',
+      week: {
+        mon: { enabled: true, start: '09:00', end: '19:00' },
+        tue: { enabled: true, start: '09:00', end: '19:00' },
+        wed: { enabled: true, start: '09:00', end: '19:00' },
+        thu: { enabled: true, start: '09:00', end: '19:00' },
+        fri: { enabled: true, start: '09:00', end: '19:00' },
+        sat: { enabled: false, start: '10:00', end: '15:00' },
+        sun: { enabled: false, start: '10:00', end: '15:00' },
+      },
+    };
   });
 
+  useEffect(() => {
+    try {
+      localStorage.setItem('ac_energy_site_profile', JSON.stringify(siteProfile));
+    } catch (e) {
+      console.warn(e);
+    }
+  }, [siteProfile]);
+
   // Settings
-  const [settings, setSettings] = useState({
-    project: 'AC Energy Management',
-    site: 'Main Building',
-    tariff: 8.50,
-    threshold: 50,
-    timeout: 15,
-    themeMode: 'light',
-    themePreset: 'porcelain',
-    watermark: 'SoCTeamup Semiconductors',
-    accentColor: '#4f46e5',
-    iconColor: '#4f46e5',
-    kpiColor: '#4f46e5',
-    roomCardColor: '#4f46e5',
-    bgPrimary: '#f8fafc',
-    bgSecondary: '#ffffff',
-    cardBg: '#ffffff',
-    textPrimary: '#0f172a',
-    textMuted: '#64748b',
-    borderColor: '#e2e8f0',
+  const [settings, setSettings] = useState(() => {
+    try {
+      const saved = localStorage.getItem('ac_energy_settings');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.warn(e);
+    }
+    return {
+      project: 'AC Energy Management',
+      site: 'Main Building',
+      tariff: 8.50,
+      threshold: 50,
+      timeout: 15,
+      themeMode: 'light',
+      themePreset: 'porcelain',
+      watermark: 'SoCTeamup Semiconductors',
+      accentColor: '#4f46e5',
+      iconColor: '#4f46e5',
+      kpiColor: '#4f46e5',
+      roomCardColor: '#4f46e5',
+      bgPrimary: '#f8fafc',
+      bgSecondary: '#ffffff',
+      cardBg: '#ffffff',
+      textPrimary: '#0f172a',
+      textMuted: '#64748b',
+      borderColor: '#e2e8f0',
+    };
   });
+
+  // Sync settings and apply theme accent
+  useEffect(() => {
+    try {
+      localStorage.setItem('ac_energy_settings', JSON.stringify(settings));
+    } catch (e) {
+      console.warn(e);
+    }
+    applyThemeAccent(settings.accentColor || '#4f46e5');
+  }, [settings]);
 
   // Users
   const [users, setUsers] = useState([
@@ -579,6 +636,7 @@ export function AppProvider({ children }) {
         theme,
         setTheme,
         toggleTheme,
+        applyThemeAccent,
         currentTab,
         setCurrentTab,
         roomsData,

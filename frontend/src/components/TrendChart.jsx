@@ -8,6 +8,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
+import { useApp } from '../context/AppContext';
 
 const dailyData = [
   { time: '12 AM', kwh: 12.0 },
@@ -52,6 +53,8 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 export default function TrendChart() {
+  const { settings } = useApp();
+  const accentColor = settings?.accentColor || '#4F46E5';
   const [filter, setFilter] = useState('daily');
 
   const chartData = filter === 'daily' ? dailyData : filter === 'weekly' ? weeklyData : monthlyData;
@@ -90,7 +93,7 @@ export default function TrendChart() {
           <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
             <defs>
               <linearGradient id="energyFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#2563EB" stopOpacity={0.35} />
+                <stop offset="0%" stopColor={accentColor} stopOpacity={0.35} />
                 <stop offset="60%" stopColor="#38BDF8" stopOpacity={0.12} />
                 <stop offset="100%" stopColor="#38BDF8" stopOpacity={0.0} />
               </linearGradient>
@@ -111,14 +114,14 @@ export default function TrendChart() {
             <Area
               type="natural"
               dataKey="kwh"
-              stroke="#2563EB"
+              stroke={accentColor}
               strokeWidth={3}
               fillOpacity={1}
               fill="url(#energyFill)"
               activeDot={{
                 r: 6,
                 fill: '#FFFFFF',
-                stroke: '#2563EB',
+                stroke: accentColor,
                 strokeWidth: 3,
               }}
             />
