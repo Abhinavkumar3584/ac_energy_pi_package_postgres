@@ -22,17 +22,14 @@ export default function AlertsView() {
       {/* Header */}
       <div className="glass-card p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5">
         <div>
-          <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 leading-tight">
+          <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white leading-tight">
             Active System & Electrical Alerts ({alerts.length})
           </h2>
-          <p className="text-xs text-slate-500 font-medium mt-0.5">
-            Auto-generated from PZEM telemetry, daily kWh quotas, offline nodes & relay triggers
-          </p>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
           {/* Severity Filters */}
-          <div className="flex items-center bg-slate-100 p-0.5 rounded-xl text-xs font-bold">
+          <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 rounded-xl text-xs font-bold border border-slate-200/80 dark:border-slate-700">
             {['all', 'warn', 'info', 'ok'].map((f) => (
               <button
                 key={f}
@@ -41,7 +38,7 @@ export default function AlertsView() {
                 className={`px-3 py-1 rounded-lg uppercase transition-all ${
                   filter === f
                     ? 'bg-blue-600 text-white shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 {f === 'all' ? 'All' : f === 'warn' ? 'Warnings' : f === 'info' ? 'Info' : 'Normal'}
@@ -53,7 +50,7 @@ export default function AlertsView() {
             <button
               type="button"
               onClick={handleMarkAllAlertsRead}
-              className="px-3 py-1.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-xs font-bold text-slate-700 flex items-center gap-1.5 transition-colors"
+              className="px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 transition-colors"
             >
               <DoneAllRoundedIcon sx={{ fontSize: 16 }} />
               <span>Mark All Read</span>
@@ -92,10 +89,10 @@ export default function AlertsView() {
                   </span>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-slate-900">
+                      <span className="text-xs font-bold text-slate-900 dark:text-white">
                         {a.room}
                       </span>
-                      <span className="px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded text-[10px] font-mono font-bold">
+                      <span className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded text-[10px] font-mono font-bold border border-slate-200/60 dark:border-slate-700">
                         {a.roomId}
                       </span>
                       <span className="text-[10px] text-slate-400 font-medium">
@@ -103,10 +100,10 @@ export default function AlertsView() {
                       </span>
                     </div>
 
-                    <h4 className="text-sm font-extrabold text-slate-800 mt-1">
+                    <h4 className="text-sm font-extrabold text-slate-800 dark:text-slate-100 mt-1">
                       {a.title}
                     </h4>
-                    <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5 leading-relaxed">
                       {a.desc}
                     </p>
                   </div>
@@ -116,7 +113,7 @@ export default function AlertsView() {
                   type="button"
                   onClick={() => handleDismissAlert(a.id)}
                   title="Dismiss Alert"
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                 >
                   <DeleteOutlineRoundedIcon sx={{ fontSize: 18 }} />
                 </button>
@@ -126,7 +123,7 @@ export default function AlertsView() {
         ) : (
           <div className="glass-card p-12 text-center">
             <CheckCircleOutlineRoundedIcon sx={{ fontSize: 40, color: '#10B981', margin: '0 auto 8px' }} />
-            <h4 className="text-sm font-bold text-slate-800">
+            <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">
               No Active Alerts
             </h4>
             <p className="text-xs text-slate-400 mt-1">

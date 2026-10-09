@@ -105,16 +105,13 @@ export default function SettingsView() {
       {/* Top Header & Segmented Tabs Bar */}
       <div className="glass-card p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5">
         <div>
-          <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 leading-tight">
+          <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white leading-tight">
             System &amp; Dashboard Settings
           </h2>
-          <p className="text-xs text-slate-500 font-medium mt-0.5">
-            Configure site identities, operating calendars, circuit quotas, theme presets & user roles
-          </p>
         </div>
 
         {/* 4 Segmented Nav Buttons */}
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-bold overflow-x-auto max-w-full">
+        <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-bold overflow-x-auto max-w-full border border-slate-200/80 dark:border-slate-700">
           {[
             { id: 'general', label: 'General & Profile', icon: <TuneRoundedIcon sx={{ fontSize: 16 }} /> },
             { id: 'rooms', label: 'Room Rules & Limits', icon: <MeetingRoomRoundedIcon sx={{ fontSize: 16 }} /> },
@@ -128,7 +125,7 @@ export default function SettingsView() {
               className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all whitespace-nowrap ${
                 activeTab === tab.id
                   ? 'bg-blue-600 text-white shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               {tab.icon}
@@ -142,7 +139,7 @@ export default function SettingsView() {
       {activeTab === 'general' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5">
           <div className="lg:col-span-6 glass-card p-3.5 flex flex-col gap-3.5">
-            <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider">
+            <h3 className="text-sm font-extrabold text-slate-900 dark:text-white uppercase tracking-wider">
               Site Identity &amp; Electrical Thresholds
             </h3>
 
@@ -155,7 +152,7 @@ export default function SettingsView() {
                   type="text"
                   value={settings.project}
                   onChange={(e) => setSettings({ ...settings, project: e.target.value })}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 font-bold text-slate-800"
+                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2 font-bold text-slate-800 dark:text-slate-200"
                 />
               </div>
 
@@ -167,7 +164,7 @@ export default function SettingsView() {
                   type="text"
                   value={settings.site}
                   onChange={(e) => setSettings({ ...settings, site: e.target.value })}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 font-bold text-slate-800"
+                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2 font-bold text-slate-800 dark:text-slate-200"
                 />
               </div>
 
@@ -180,7 +177,7 @@ export default function SettingsView() {
                   step="0.1"
                   value={settings.tariff}
                   onChange={(e) => setSettings({ ...settings, tariff: parseFloat(e.target.value) || 8.5 })}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 font-bold text-slate-800"
+                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2 font-bold text-slate-800 dark:text-slate-200"
                 />
               </div>
 
@@ -192,7 +189,7 @@ export default function SettingsView() {
                   type="number"
                   value={settings.threshold}
                   onChange={(e) => setSettings({ ...settings, threshold: parseInt(e.target.value) || 50 })}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 font-bold text-slate-800"
+                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2 font-bold text-slate-800 dark:text-slate-200"
                 />
               </div>
 
@@ -204,7 +201,7 @@ export default function SettingsView() {
                   type="number"
                   value={settings.timeout}
                   onChange={(e) => setSettings({ ...settings, timeout: parseInt(e.target.value) || 15 })}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 font-bold text-slate-800"
+                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2 font-bold text-slate-800 dark:text-slate-200"
                 />
               </div>
 
@@ -215,7 +212,7 @@ export default function SettingsView() {
                 <select
                   value={siteProfile.after_hours}
                   onChange={(e) => setSiteProfile({ ...siteProfile, after_hours: e.target.value })}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 font-bold text-slate-800"
+                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2 font-bold text-slate-800 dark:text-slate-200"
                 >
                   <option value="warning">Display Warning on Dashboard</option>
                   <option value="allow">Silent Measurement Only</option>
@@ -226,7 +223,7 @@ export default function SettingsView() {
 
           {/* Site Profile Presets */}
           <div className="lg:col-span-6 glass-card p-3.5 flex flex-col gap-3.5">
-            <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider">
+            <h3 className="text-sm font-extrabold text-slate-900 dark:text-white uppercase tracking-wider">
               Operating Profile Presets
             </h3>
 
@@ -238,17 +235,17 @@ export default function SettingsView() {
                   onClick={() => setSiteProfile({ ...siteProfile, type: p.id, name: p.name })}
                   className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all ${
                     siteProfile.type === p.id
-                      ? 'bg-blue-50 border-blue-600 shadow-xs ring-2 ring-blue-500/20'
-                      : 'bg-white border-slate-200 hover:bg-slate-50'
+                      ? 'bg-blue-50 dark:bg-blue-950/60 border-blue-600 shadow-xs ring-2 ring-blue-500/20'
+                      : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/60'
                   }`}
                 >
-                  <span className="font-extrabold text-xs text-slate-900 block">{p.name}</span>
+                  <span className="font-extrabold text-xs text-slate-900 dark:text-white block">{p.name}</span>
                   <span className="text-[10px] text-slate-400 mt-1 block">{p.hours}</span>
                 </button>
               ))}
             </div>
 
-            <div className="mt-2 p-3 bg-blue-50/70 border border-blue-200 rounded-xl text-xs text-blue-900 leading-relaxed">
+            <div className="mt-2 p-3 bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/60 rounded-xl text-xs text-blue-900 dark:text-blue-200 leading-relaxed">
               <b>Active Profile:</b> {siteProfile.name} &bull; Gauges calibrate 100% capacity against configured operating hours or set limits.
             </div>
           </div>
@@ -269,7 +266,7 @@ export default function SettingsView() {
                 placeholder="Room ID (e.g. ROOM_107)"
                 value={newRoomId}
                 onChange={(e) => setNewRoomId(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-800"
+                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-800 dark:text-slate-200"
               />
             </div>
             <div className="flex-1 w-full sm:w-auto">
@@ -278,7 +275,7 @@ export default function SettingsView() {
                 placeholder="Room Name (e.g. Finance Dept)"
                 value={newRoomName}
                 onChange={(e) => setNewRoomName(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-800"
+                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-800 dark:text-slate-200"
               />
             </div>
             <div className="w-full sm:w-36">
@@ -287,7 +284,7 @@ export default function SettingsView() {
                 placeholder="Max Watts"
                 value={newRoomMax}
                 onChange={(e) => setNewRoomMax(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-800"
+                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-800 dark:text-slate-200"
               />
             </div>
             <button
@@ -304,7 +301,7 @@ export default function SettingsView() {
             <div className="overflow-x-auto w-full">
               <table className="w-full min-w-[700px] text-left border-collapse text-xs sm:text-sm">
                 <thead>
-                  <tr className="border-b border-slate-200 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                  <tr className="border-b border-slate-200 dark:border-slate-700 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
                     <th className="py-2.5 px-3">Room ID</th>
                     <th className="py-2.5 px-3">Room Name</th>
                     <th className="py-2.5 px-3">Daily Limit (kWh)</th>
@@ -313,10 +310,10 @@ export default function SettingsView() {
                     <th className="py-2.5 px-3 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                   {roomsData.map((room) => (
-                    <tr key={room.room_id} className="hover:bg-slate-50/70">
-                      <td className="py-3 px-3 font-mono font-bold text-blue-600">
+                    <tr key={room.room_id} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/50">
+                      <td className="py-3 px-3 font-mono font-bold text-blue-600 dark:text-blue-400">
                         {room.room_id}
                       </td>
                       <td className="py-3 px-3">
@@ -324,7 +321,7 @@ export default function SettingsView() {
                           type="text"
                           value={room.room_name}
                           onChange={(e) => handleUpdateRoom(room.room_id, { room_name: e.target.value })}
-                          className="bg-transparent border-b border-transparent hover:border-slate-300 font-bold text-slate-800 text-xs py-0.5 focus:outline-none"
+                          className="bg-transparent border-b border-transparent hover:border-slate-300 dark:hover:border-slate-600 font-bold text-slate-800 dark:text-slate-200 text-xs py-0.5 focus:outline-none"
                         />
                       </td>
                       <td className="py-3 px-3">
@@ -333,7 +330,7 @@ export default function SettingsView() {
                           step="1"
                           value={room.daily_limit_kwh}
                           onChange={(e) => handleUpdateRoom(room.room_id, { daily_limit_kwh: e.target.value })}
-                          className="w-20 bg-slate-50 border border-slate-200 rounded-lg p-1 font-bold text-slate-800 text-xs text-center"
+                          className="w-20 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-1 font-bold text-slate-800 dark:text-slate-200 text-xs text-center"
                         />
                       </td>
                       <td className="py-3 px-3">
@@ -342,7 +339,7 @@ export default function SettingsView() {
                           step="0.1"
                           value={room.tariff_per_kwh}
                           onChange={(e) => handleUpdateRoom(room.room_id, { tariff_per_kwh: e.target.value })}
-                          className="w-16 bg-slate-50 border border-slate-200 rounded-lg p-1 font-bold text-slate-800 text-xs text-center"
+                          className="w-16 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-1 font-bold text-slate-800 dark:text-slate-200 text-xs text-center"
                         />
                       </td>
                       <td className="py-3 px-3">
@@ -377,12 +374,9 @@ export default function SettingsView() {
         <div className="flex flex-col gap-3.5">
           <div className="glass-card p-3.5 flex flex-col gap-3.5">
             <div>
-              <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider">
+              <h3 className="text-sm font-extrabold text-slate-900 dark:text-white uppercase tracking-wider">
                 9 One-Click Color &amp; Aesthetic Presets
               </h3>
-              <p className="text-xs text-slate-500">
-                Crafted color harmony tokens inspired by modern design systems
-              </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
@@ -396,8 +390,8 @@ export default function SettingsView() {
                   }}
                   className={`p-3.5 rounded-xl border flex items-center justify-between transition-all ${
                     settings.themePreset === preset.id
-                      ? 'bg-blue-50/80 border-blue-600 shadow-sm ring-2 ring-blue-500/20'
-                      : 'bg-white border-slate-200 hover:bg-slate-50'
+                      ? 'bg-blue-50/80 dark:bg-blue-950/60 border-blue-600 shadow-sm ring-2 ring-blue-500/20'
+                      : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/60'
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -405,7 +399,7 @@ export default function SettingsView() {
                       className={`w-6 h-6 rounded-lg bg-gradient-to-br ${preset.colorClass} shadow-xs flex-shrink-0`}
                     />
                     <div className="text-left">
-                      <span className="font-extrabold text-xs text-slate-900 block leading-tight">
+                      <span className="font-extrabold text-xs text-slate-900 dark:text-white block leading-tight">
                         {preset.name}
                       </span>
                       <span className="text-[10px] text-slate-400 font-mono">
@@ -429,7 +423,7 @@ export default function SettingsView() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5">
           {/* User List */}
           <div className="lg:col-span-7 glass-card p-3.5 flex flex-col gap-3.5">
-            <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider">
+            <h3 className="text-sm font-extrabold text-slate-900 dark:text-white uppercase tracking-wider">
               System Operators &amp; Role Access
             </h3>
 
@@ -437,10 +431,10 @@ export default function SettingsView() {
               {users.map((u) => (
                 <div
                   key={u.username}
-                  className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between text-xs"
+                  className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center justify-between text-xs"
                 >
                   <div>
-                    <span className="font-extrabold text-slate-800 block text-xs">
+                    <span className="font-extrabold text-slate-800 dark:text-slate-200 block text-xs">
                       {u.displayName}
                     </span>
                     <span className="text-[10px] text-slate-400 font-mono">
@@ -449,7 +443,7 @@ export default function SettingsView() {
                   </div>
 
                   {u.username === 'admin' ? (
-                    <span className="px-2 py-0.5 bg-slate-200 text-slate-600 rounded text-[10px] font-bold">
+                    <span className="px-2 py-0.5 bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded text-[10px] font-bold">
                       Protected
                     </span>
                   ) : (
@@ -468,7 +462,7 @@ export default function SettingsView() {
 
           {/* Add User Form */}
           <div className="lg:col-span-5 glass-card p-3.5 flex flex-col gap-3.5">
-            <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider">
+            <h3 className="text-sm font-extrabold text-slate-900 dark:text-white uppercase tracking-wider">
               Create New Operator
             </h3>
 
@@ -482,7 +476,7 @@ export default function SettingsView() {
                   placeholder="e.g. operator_john"
                   value={newUsername}
                   onChange={(e) => setNewUsername(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 font-bold text-slate-800"
+                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2 font-bold text-slate-800 dark:text-slate-200"
                 />
               </div>
 
@@ -495,7 +489,7 @@ export default function SettingsView() {
                   placeholder="e.g. John Doe"
                   value={newDisplayName}
                   onChange={(e) => setNewDisplayName(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 font-bold text-slate-800"
+                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2 font-bold text-slate-800 dark:text-slate-200"
                 />
               </div>
 
@@ -506,7 +500,7 @@ export default function SettingsView() {
                 <select
                   value={newRole}
                   onChange={(e) => setNewRole(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 font-bold text-slate-800"
+                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2 font-bold text-slate-800 dark:text-slate-200"
                 >
                   <option value="operator">Operator (Monitoring &amp; Relay Commands)</option>
                   <option value="admin">Administrator (Full Access)</option>

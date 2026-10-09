@@ -59,17 +59,14 @@ export default function TrendChart() {
   return (
     <div className="glass-card p-3.5 flex flex-col justify-between w-full h-full min-w-0 box-border">
       {/* Header and Filter Buttons */}
-      <div className="flex justify-between items-start mb-3.5 flex-wrap gap-3.5">
+      <div className="flex justify-between items-center mb-3.5 flex-wrap gap-3.5">
         <div>
-          <h3 className="text-base sm:text-lg font-extrabold text-slate-900 leading-tight">
+          <h3 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white leading-tight">
             Energy Consumption Trend
           </h3>
-          <p className="text-xs text-slate-500 font-medium mt-0.5">
-            24-hour diurnal curve with real-time solar alignment
-          </p>
         </div>
 
-        <div className="flex items-center bg-slate-100/90 p-1 rounded-xl">
+        <div className="flex items-center bg-slate-100/90 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200/60 dark:border-slate-700/60">
           {['daily', 'weekly', 'monthly'].map((type) => (
             <button
               key={type}
@@ -78,7 +75,7 @@ export default function TrendChart() {
               className={`px-3 py-1 text-xs font-bold rounded-lg capitalize transition-all ${
                 filter === type
                   ? 'bg-blue-600 text-white shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               {type}

@@ -85,11 +85,11 @@ export default function ConnectPortModal({ open, onClose, hubStatus, onRefreshSt
 
   return (
     <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-3.5">
-      <div className="bg-white/95 backdrop-blur-2xl p-3.5 rounded-2xl w-full max-w-md shadow-2xl border border-white/90 relative animate-in fade-in zoom-in-95 duration-200">
+      <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl p-3.5 rounded-2xl w-full max-w-md shadow-2xl border border-white/90 dark:border-slate-800 relative animate-in fade-in zoom-in-95 duration-200">
         {/* Header */}
         <div className="flex justify-between items-center mb-3.5">
-          <div className="flex items-center gap-2 text-slate-900">
-            <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+          <div className="flex items-center gap-2 text-slate-900 dark:text-white">
+            <div className="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center">
               <UsbRoundedIcon sx={{ fontSize: 20 }} />
             </div>
             <h3 className="text-base font-extrabold">ESP32 Hardware Hub</h3>
@@ -97,7 +97,7 @@ export default function ConnectPortModal({ open, onClose, hubStatus, onRefreshSt
           <button
             type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 flex items-center justify-center transition-colors"
+            className="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition-colors"
           >
             <CloseRoundedIcon sx={{ fontSize: 18 }} />
           </button>
@@ -105,30 +105,30 @@ export default function ConnectPortModal({ open, onClose, hubStatus, onRefreshSt
 
         {/* Alerts */}
         {errorMsg && (
-          <div className="p-3 mb-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold">
+          <div className="p-3 mb-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-300 text-xs font-semibold">
             {errorMsg}
           </div>
         )}
         {successMsg && (
-          <div className="p-3 mb-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold">
+          <div className="p-3 mb-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-semibold">
             {successMsg}
           </div>
         )}
 
-        <p className="text-xs text-slate-600 mb-4">
+        <p className="text-xs text-slate-600 dark:text-slate-400 mb-4">
           Connect to the ESP-NOW serial hub receiving AC energy meter telemetry.
         </p>
 
         {/* Inputs */}
         <div className="flex flex-col gap-3 mb-4">
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
               Serial COM Port
             </label>
             <select
               value={selectedPort}
               onChange={(e) => setSelectedPort(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
             >
               {ports.map((p) => (
                 <option key={p.device} value={p.device}>
@@ -140,13 +140,13 @@ export default function ConnectPortModal({ open, onClose, hubStatus, onRefreshSt
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
               Baud Rate
             </label>
             <select
               value={baud}
               onChange={(e) => setBaud(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
             >
               <option value={9600}>9600</option>
               <option value={115200}>115200 (Recommended)</option>
@@ -156,9 +156,9 @@ export default function ConnectPortModal({ open, onClose, hubStatus, onRefreshSt
         </div>
 
         {/* Current status pill */}
-        <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs mb-5 flex justify-between items-center">
-          <span className="text-slate-500 font-medium">Status:</span>
-          <span className={`font-bold ${isConnected ? 'text-emerald-600' : 'text-rose-600'}`}>
+        <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs mb-5 flex justify-between items-center">
+          <span className="text-slate-500 dark:text-slate-400 font-medium">Status:</span>
+          <span className={`font-bold ${isConnected ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>
             {isConnected ? `CONNECTED (${hubStatus?.port})` : 'DISCONNECTED'}
           </span>
         </div>
@@ -168,7 +168,7 @@ export default function ConnectPortModal({ open, onClose, hubStatus, onRefreshSt
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition-colors"
+            className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           >
             Cancel
           </button>
@@ -177,7 +177,7 @@ export default function ConnectPortModal({ open, onClose, hubStatus, onRefreshSt
               type="button"
               onClick={handleDisconnect}
               disabled={loading}
-              className="px-4 py-2 rounded-xl text-xs font-bold text-rose-700 bg-rose-50 border border-rose-200 hover:bg-rose-100 transition-colors"
+              className="px-4 py-2 rounded-xl text-xs font-bold text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/50 hover:bg-rose-100 dark:hover:bg-rose-900/40 transition-colors"
             >
               {loading ? 'Disconnecting...' : 'Disconnect'}
             </button>

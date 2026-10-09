@@ -29,12 +29,9 @@ export default function HistoryView() {
       {/* Header Bar */}
       <div className="glass-card p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5">
         <div>
-          <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 leading-tight">
+          <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white leading-tight">
             Energy Records History ({historyData.length} Stored Entries)
           </h2>
-          <p className="text-xs text-slate-500 font-medium mt-0.5">
-            Non-volatile daily meter logs, starting baselines & electricity charges in PostgreSQL
-          </p>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto">
@@ -51,14 +48,14 @@ export default function HistoryView() {
                 setSearchTerm(e.target.value);
                 setPage(1);
               }}
-              className="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              className="w-full pl-9 pr-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
             />
           </div>
 
           <button
             type="button"
             onClick={exportHistoryCSV}
-            className="px-3.5 py-1.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-xs font-bold text-slate-700 flex items-center gap-1.5 transition-colors shadow-2xs"
+            className="px-3.5 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 transition-colors shadow-2xs"
           >
             <FileDownloadRoundedIcon sx={{ fontSize: 16 }} />
             <span>CSV</span>
@@ -67,7 +64,7 @@ export default function HistoryView() {
           <button
             type="button"
             onClick={() => exportHistoryPDF('Energy Records History')}
-            className="px-3.5 py-1.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-xs font-bold text-slate-700 flex items-center gap-1.5 transition-colors shadow-2xs"
+            className="px-3.5 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 transition-colors shadow-2xs"
           >
             <PictureAsPdfRoundedIcon sx={{ fontSize: 16 }} />
             <span>PDF</span>
@@ -76,7 +73,7 @@ export default function HistoryView() {
           <button
             type="button"
             onClick={refreshBackend}
-            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
+            className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors"
             title="Refresh database records"
           >
             <RefreshRoundedIcon sx={{ fontSize: 18 }} />
@@ -89,7 +86,7 @@ export default function HistoryView() {
         <div className="overflow-x-auto w-full">
           <table className="w-full min-w-[800px] text-left border-collapse text-xs sm:text-sm">
             <thead>
-              <tr className="border-b border-slate-200 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+              <tr className="border-b border-slate-200 dark:border-slate-700 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
                 <th className="py-2.5 px-3">Date</th>
                 <th className="py-2.5 px-3">Room Info</th>
                 <th className="py-2.5 px-3">Start Meter</th>
@@ -102,38 +99,40 @@ export default function HistoryView() {
                 <th className="py-2.5 px-3 text-right">Bill</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               {paginatedRows.length > 0 ? (
                 paginatedRows.map((row, idx) => {
                   const exceeded = row.limit_exceeded === 'true';
                   const cutoff = row.cutoff_triggered === 'true';
                   return (
-                    <tr key={idx} className="hover:bg-slate-50/70 transition-colors">
-                      <td className="py-3 px-3 font-mono font-bold text-slate-700">
+                    <tr key={idx} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/50 transition-colors">
+                      <td className="py-3 px-3 font-mono font-bold text-slate-700 dark:text-slate-300">
                         {row.date}
                       </td>
                       <td className="py-3 px-3">
-                        <b className="text-slate-800 font-bold block">{row.room_name}</b>
+                        <b className="text-slate-800 dark:text-slate-200 font-bold block">{row.room_name}</b>
                         <span className="text-[10px] text-slate-400 font-mono font-bold">
                           {row.room_id}
                         </span>
                       </td>
-                      <td className="py-3 px-3 font-mono text-slate-500">
+                      <td className="py-3 px-3 font-mono text-slate-500 dark:text-slate-400">
                         {row.start_meter_kwh}
                       </td>
-                      <td className="py-3 px-3 font-mono text-slate-500">
+                      <td className="py-3 px-3 font-mono text-slate-500 dark:text-slate-400">
                         {row.end_meter_kwh}
                       </td>
-                      <td className="py-3 px-3 font-bold text-slate-900">
+                      <td className="py-3 px-3 font-bold text-slate-900 dark:text-white">
                         {row.daily_energy_kwh} kWh
                       </td>
-                      <td className="py-3 px-3 text-slate-600 font-semibold">
+                      <td className="py-3 px-3 text-slate-600 dark:text-slate-400 font-semibold">
                         {row.daily_limit_kwh} kWh
                       </td>
                       <td className="py-3 px-3">
                         <span
                           className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${
-                            exceeded ? 'bg-rose-100 text-rose-700' : 'bg-slate-100 text-slate-600'
+                            exceeded
+                              ? 'bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300 dark:border dark:border-rose-800/40'
+                              : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
                           }`}
                         >
                           {exceeded ? 'YES' : 'NO'}
@@ -142,16 +141,18 @@ export default function HistoryView() {
                       <td className="py-3 px-3">
                         <span
                           className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${
-                            cutoff ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-600'
+                            cutoff
+                              ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 dark:border dark:border-amber-800/40'
+                              : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
                           }`}
                         >
                           {cutoff ? 'TRIGGERED' : 'NONE'}
                         </span>
                       </td>
-                      <td className="py-3 px-3 text-slate-600 font-mono">
+                      <td className="py-3 px-3 text-slate-600 dark:text-slate-400 font-mono">
                         ₹{row.tariff_per_kwh}
                       </td>
-                      <td className="py-3 px-3 text-right font-extrabold text-emerald-600">
+                      <td className="py-3 px-3 text-right font-extrabold text-emerald-600 dark:text-emerald-400">
                         ₹{row.energy_charge_inr}
                       </td>
                     </tr>
@@ -170,8 +171,8 @@ export default function HistoryView() {
 
         {/* Pagination Bar */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-slate-200 mt-4 pt-3 text-xs">
-            <span className="text-slate-500 font-medium">
+          <div className="flex items-center justify-between border-t border-slate-200 dark:border-slate-800 mt-4 pt-3 text-xs">
+            <span className="text-slate-500 dark:text-slate-400 font-medium">
               Page {page} of {totalPages} ({filtered.length} records)
             </span>
             <div className="flex items-center gap-1.5">
@@ -179,7 +180,7 @@ export default function HistoryView() {
                 type="button"
                 disabled={page <= 1}
                 onClick={() => setPage(page - 1)}
-                className="px-3 py-1 rounded-lg border border-slate-200 font-bold text-slate-700 disabled:opacity-40"
+                className="px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 font-bold text-slate-700 dark:text-slate-300 disabled:opacity-40 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               >
                 Previous
               </button>
@@ -187,7 +188,7 @@ export default function HistoryView() {
                 type="button"
                 disabled={page >= totalPages}
                 onClick={() => setPage(page + 1)}
-                className="px-3 py-1 rounded-lg border border-slate-200 font-bold text-slate-700 disabled:opacity-40"
+                className="px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 font-bold text-slate-700 dark:text-slate-300 disabled:opacity-40 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               >
                 Next
               </button>

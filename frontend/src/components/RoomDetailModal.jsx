@@ -87,26 +87,23 @@ export default function RoomDetailModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3.5 bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
-      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden my-auto animate-in fade-in zoom-in-95 duration-200">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden my-auto animate-in fade-in zoom-in-95 duration-200">
         {/* Modal Header */}
-        <div className="p-3.5 border-b border-slate-200 flex items-center justify-between bg-slate-50/70">
+        <div className="p-3.5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-slate-800/50">
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-lg sm:text-xl font-extrabold text-slate-900">
+              <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">
                 {room.room_name}
               </h2>
-              <span className="px-2 py-0.5 bg-blue-100 text-blue-800 rounded font-mono text-xs font-bold">
+              <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 rounded font-mono text-xs font-bold border border-blue-200 dark:border-blue-700/50">
                 {room.room_id}
               </span>
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Circuit Telemetry, Weekly Scheduling & Intelligent Automation Controls
-            </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-xl bg-slate-200/80 hover:bg-slate-300 flex items-center justify-center text-slate-600 transition-colors"
+            className="w-8 h-8 rounded-xl bg-slate-200/80 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 transition-colors"
           >
             <CloseRoundedIcon sx={{ fontSize: 18 }} />
           </button>
@@ -116,29 +113,29 @@ export default function RoomDetailModal({
         <div className="p-3.5 overflow-y-auto flex-1 flex flex-col gap-3.5">
           {/* 4 Top KPI Mini Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-              <span className="text-[10px] font-bold uppercase text-slate-400 block">Live Power</span>
-              <span className="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5 block">
+            <div className="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700/60">
+              <span className="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-400 block">Live Power</span>
+              <span className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white mt-0.5 block">
                 {reading.power?.toFixed(0)} W
               </span>
             </div>
-            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-              <span className="text-[10px] font-bold uppercase text-slate-400 block">Today's Energy</span>
-              <span className="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5 block">
+            <div className="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700/60">
+              <span className="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-400 block">Today's Energy</span>
+              <span className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white mt-0.5 block">
                 {dailyKwh.toFixed(2)} kWh
               </span>
             </div>
-            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-              <span className="text-[10px] font-bold uppercase text-slate-400 block">Today's Bill</span>
-              <span className="text-base sm:text-lg font-extrabold text-emerald-600 mt-0.5 block">
+            <div className="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700/60">
+              <span className="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-400 block">Today's Bill</span>
+              <span className="text-base sm:text-lg font-extrabold text-emerald-600 dark:text-emerald-400 mt-0.5 block">
                 ₹{cost}
               </span>
             </div>
-            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-              <span className="text-[10px] font-bold uppercase text-slate-400 block">Relay State</span>
+            <div className="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700/60">
+              <span className="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-400 block">Relay State</span>
               <span
                 className={`text-base sm:text-lg font-extrabold mt-0.5 block ${
-                  relayState === 'ON' ? 'text-emerald-600' : 'text-rose-600'
+                  relayState === 'ON' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'
                 }`}
               >
                 {relayState}
@@ -147,15 +144,12 @@ export default function RoomDetailModal({
           </div>
 
           {/* Operating Mode & Manual Switch */}
-          <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200 flex flex-col gap-3.5">
+          <div className="p-3.5 bg-slate-50/80 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700/60 flex flex-col gap-3.5">
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
                   Operating Mode
                 </h4>
-                <p className="text-[11px] text-slate-500">
-                  Select logic mode for automatic circuit relay triggering
-                </p>
               </div>
 
               {/* Master Relay Switch */}
@@ -187,7 +181,7 @@ export default function RoomDetailModal({
                   className={`p-2.5 rounded-xl border text-xs font-bold flex flex-col items-center gap-1 transition-all ${
                     localMode === m.id
                       ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/20'
-                      : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'
+                      : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
                   }`}
                 >
                   {m.icon}
@@ -198,16 +192,16 @@ export default function RoomDetailModal({
           </div>
 
           {/* Energy Protection & Limits */}
-          <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200 flex flex-col gap-3.5">
-            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+          <div className="p-3.5 bg-slate-50/80 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700/60 flex flex-col gap-3.5">
+            <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
               Daily Quota & Occupancy Timeout
             </h4>
             <div>
-              <div className="flex justify-between text-xs font-semibold text-slate-700 mb-1.5">
+              <div className="flex justify-between text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 <span>Daily Limit: {limitKwh > 0 ? `${limitKwh.toFixed(1)} kWh` : 'Unlimited'}</span>
                 <span>{usedPct.toFixed(1)}% Used</span>
               </div>
-              <div className="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+              <div className="w-full h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                 <div
                   className={`h-full transition-all duration-500 ${
                     usedPct > 90 ? 'bg-rose-500' : usedPct > 70 ? 'bg-amber-500' : 'bg-blue-600'
@@ -218,34 +212,34 @@ export default function RoomDetailModal({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-              <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+              <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={localOccupancy}
                   onChange={(e) => setLocalOccupancy(e.target.checked)}
-                  className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500"
+                  className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 dark:bg-slate-800 dark:border-slate-600"
                 />
                 <span>Enable PIR Occupancy Sensor Cutoff</span>
               </label>
 
               <div className="flex items-center justify-between sm:justify-end gap-2 text-xs">
-                <span className="text-slate-500 font-medium">Empty Timeout:</span>
+                <span className="text-slate-500 dark:text-slate-400 font-medium">Empty Timeout:</span>
                 <input
                   type="number"
                   min="1"
                   max="120"
                   value={localTimeout}
                   onChange={(e) => setLocalTimeout(parseInt(e.target.value) || 20)}
-                  className="w-16 px-2 py-1 bg-white border border-slate-300 rounded-lg text-center font-bold text-slate-800"
+                  className="w-16 px-2 py-1 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg text-center font-bold text-slate-800 dark:text-white"
                 />
-                <span className="text-slate-500">mins</span>
+                <span className="text-slate-500 dark:text-slate-400">mins</span>
               </div>
             </div>
           </div>
 
           {/* Weekly Schedule Days */}
-          <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200 flex flex-col gap-3.5">
-            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+          <div className="p-3.5 bg-slate-50/80 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700/60 flex flex-col gap-3.5">
+            <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
               Weekly Operating Schedule
             </h4>
             <div className="flex flex-col gap-2">
@@ -254,7 +248,7 @@ export default function RoomDetailModal({
                 return (
                   <div
                     key={key}
-                    className="flex items-center justify-between gap-2 p-2 bg-white rounded-lg border border-slate-200 text-xs"
+                    className="flex items-center justify-between gap-2 p-2 bg-white dark:bg-slate-800/80 rounded-lg border border-slate-200 dark:border-slate-700/70 text-xs"
                   >
                     <div className="flex items-center gap-2 min-w-[100px]">
                       <input
@@ -266,9 +260,9 @@ export default function RoomDetailModal({
                             [key]: { ...dayConf, enabled: e.target.checked },
                           }));
                         }}
-                        className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500"
+                        className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 dark:bg-slate-800 dark:border-slate-600"
                       />
-                      <span className={`font-bold ${dayConf.enabled ? 'text-slate-900' : 'text-slate-400'}`}>
+                      <span className={`font-bold ${dayConf.enabled ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500'}`}>
                         {label}
                       </span>
                     </div>
@@ -284,9 +278,9 @@ export default function RoomDetailModal({
                             [key]: { ...dayConf, start: e.target.value },
                           }));
                         }}
-                        className="px-2 py-1 bg-slate-50 border border-slate-300 rounded text-xs font-semibold disabled:opacity-50"
+                        className="px-2 py-1 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded text-xs font-semibold text-slate-800 dark:text-slate-200 disabled:opacity-50"
                       />
-                      <span className="text-slate-400 font-bold">→</span>
+                      <span className="text-slate-400 dark:text-slate-500 font-bold">→</span>
                       <input
                         type="time"
                         value={dayConf.end || '19:00'}
@@ -297,7 +291,7 @@ export default function RoomDetailModal({
                             [key]: { ...dayConf, end: e.target.value },
                           }));
                         }}
-                        className="px-2 py-1 bg-slate-50 border border-slate-300 rounded text-xs font-semibold disabled:opacity-50"
+                        className="px-2 py-1 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded text-xs font-semibold text-slate-800 dark:text-slate-200 disabled:opacity-50"
                       />
                     </div>
                   </div>
@@ -307,22 +301,22 @@ export default function RoomDetailModal({
           </div>
 
           {/* Diagnostics Section */}
-          <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-[11px] grid grid-cols-2 sm:grid-cols-4 gap-3.5 text-slate-600">
+          <div className="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700/60 text-[11px] grid grid-cols-2 sm:grid-cols-4 gap-3.5 text-slate-600 dark:text-slate-300">
             <div>
-              <span className="text-slate-400 block font-bold">Node MAC:</span>
-              <span className="font-mono font-bold text-slate-800">{reading.node_mac}</span>
+              <span className="text-slate-400 dark:text-slate-400 block font-bold">Node MAC:</span>
+              <span className="font-mono font-bold text-slate-800 dark:text-white">{reading.node_mac}</span>
             </div>
             <div>
-              <span className="text-slate-400 block font-bold">Voltage:</span>
-              <span className="font-bold text-slate-800">{reading.voltage} V</span>
+              <span className="text-slate-400 dark:text-slate-400 block font-bold">Voltage:</span>
+              <span className="font-bold text-slate-800 dark:text-white">{reading.voltage} V</span>
             </div>
             <div>
-              <span className="text-slate-400 block font-bold">Frequency:</span>
-              <span className="font-bold text-slate-800">{reading.frequency} Hz</span>
+              <span className="text-slate-400 dark:text-slate-400 block font-bold">Frequency:</span>
+              <span className="font-bold text-slate-800 dark:text-white">{reading.frequency} Hz</span>
             </div>
             <div>
-              <span className="text-slate-400 block font-bold">Sensor State:</span>
-              <span className="font-bold text-emerald-600">
+              <span className="text-slate-400 dark:text-slate-400 block font-bold">Sensor State:</span>
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">
                 {reading.pzem_ok ? 'PZEM OK' : 'Sensor Error'}
               </span>
             </div>
@@ -330,10 +324,10 @@ export default function RoomDetailModal({
         </div>
 
         {/* Modal Footer */}
-        <div className="p-3.5 border-t border-slate-200 flex items-center justify-between bg-slate-50/70">
+        <div className="p-3.5 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-slate-800/50">
           <div>
             {savedToast && (
-              <span className="text-xs font-bold text-emerald-600 flex items-center gap-1">
+              <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
                 <CheckCircleRoundedIcon sx={{ fontSize: 16 }} /> Rules saved!
               </span>
             )}
@@ -342,7 +336,7 @@ export default function RoomDetailModal({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 font-bold text-xs text-slate-700 transition-colors"
+              className="px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 font-bold text-xs text-slate-700 dark:text-slate-200 transition-colors"
             >
               Close
             </button>

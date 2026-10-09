@@ -91,12 +91,9 @@ export default function AnalyticsView() {
       {/* Top Controls Toolbar */}
       <div className="glass-card p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5">
         <div>
-          <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 leading-tight">
+          <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white leading-tight">
             Energy Analytics & Visual Insights
           </h2>
-          <p className="text-xs text-slate-500 font-medium mt-0.5">
-            Real daily historical records, load patterns, billing rankings & timeline events
-          </p>
         </div>
 
         <div className="flex items-center gap-2.5 flex-wrap w-full sm:w-auto">
@@ -104,7 +101,7 @@ export default function AnalyticsView() {
           <select
             value={selectedRoom}
             onChange={(e) => setSelectedRoom(e.target.value)}
-            className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 font-bold focus:outline-none cursor-pointer"
+            className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs text-slate-800 dark:text-slate-200 font-bold focus:outline-none cursor-pointer"
           >
             <option value="all">All Rooms (Aggregated)</option>
             {roomsData.map((r) => (
@@ -118,14 +115,14 @@ export default function AnalyticsView() {
           <select
             value={metric}
             onChange={(e) => setMetric(e.target.value)}
-            className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 font-bold focus:outline-none cursor-pointer"
+            className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs text-slate-800 dark:text-slate-200 font-bold focus:outline-none cursor-pointer"
           >
             <option value="energy">Energy (kWh)</option>
             <option value="cost">Electricity Cost (₹)</option>
           </select>
 
           {/* Time Range Pills */}
-          <div className="flex items-center bg-slate-100 p-0.5 rounded-xl text-xs font-bold">
+          <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 rounded-xl text-xs font-bold border border-slate-200/80 dark:border-slate-700">
             {['24h', '7d', '30d', 'month'].map((t) => (
               <button
                 key={t}
@@ -134,7 +131,7 @@ export default function AnalyticsView() {
                 className={`px-3 py-1 rounded-lg uppercase transition-all ${
                   timeRange === t
                     ? 'bg-blue-600 text-white shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 {t}
@@ -148,14 +145,11 @@ export default function AnalyticsView() {
       <div className="glass-card p-3.5 w-full">
         <div className="flex justify-between items-center mb-3">
           <div>
-            <h3 className="text-sm sm:text-base font-extrabold text-slate-900 uppercase tracking-wider">
+            <h3 className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white uppercase tracking-wider">
               {metric === 'cost' ? 'Daily Electricity Cost Trend (₹)' : 'Daily AC Energy Consumption (kWh)'}
             </h3>
-            <p className="text-xs text-slate-500 font-medium">
-              Verified daily totals synced from PostgreSQL
-            </p>
           </div>
-          <span className="text-xs font-extrabold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg">
+          <span className="text-xs font-extrabold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800/50 px-2.5 py-1 rounded-lg">
             Total {timeRange.toUpperCase()}: {metric === 'cost' ? `₹${(totalValue * 7).toFixed(0)}` : `${(totalValue * 7).toFixed(1)} kWh`}
           </span>
         </div>
@@ -169,12 +163,14 @@ export default function AnalyticsView() {
                   <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.2)" />
               <XAxis dataKey="date" stroke="#94A3B8" fontSize={11} tickLine={false} />
               <YAxis stroke="#94A3B8" fontSize={11} tickLine={false} />
               <Tooltip
                 formatter={(val) => [metric === 'cost' ? `₹${val}` : `${val} kWh`, metric === 'cost' ? 'Cost' : 'Energy']}
-                contentStyle={{ backgroundColor: '#0F172A', borderColor: '#334155', borderRadius: '12px', color: '#fff', fontSize: '12px' }}
+                contentStyle={{ backgroundColor: '#0F172A', borderColor: '#334155', borderRadius: '12px', color: '#F8FAFC', fontSize: '12px' }}
+                itemStyle={{ color: '#F8FAFC' }}
+                labelStyle={{ color: '#94A3B8', fontWeight: 600 }}
               />
               <Area
                 type="monotone"
@@ -194,22 +190,24 @@ export default function AnalyticsView() {
         {/* Card 1: Live Power Draw */}
         <div className="glass-card p-3.5 flex flex-col">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
+            <span className="text-xs font-extrabold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
               Live Power Draw
             </span>
-            <span className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+            <span className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/50 px-2 py-0.5 rounded-full">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> LIVE
             </span>
           </div>
           <div className="h-44 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={trendData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.2)" />
                 <XAxis dataKey="date" stroke="#94A3B8" fontSize={9} tickLine={false} />
                 <YAxis stroke="#94A3B8" fontSize={9} tickLine={false} />
                 <Tooltip
                   formatter={(val) => [`${val} W`, 'Load']}
-                  contentStyle={{ backgroundColor: '#0F172A', borderRadius: '8px', color: '#fff', fontSize: '11px' }}
+                  contentStyle={{ backgroundColor: '#0F172A', borderColor: '#334155', borderRadius: '10px', color: '#F8FAFC', fontSize: '11px' }}
+                  itemStyle={{ color: '#F8FAFC' }}
+                  labelStyle={{ color: '#94A3B8', fontWeight: 600 }}
                 />
                 <Line type="monotone" dataKey="power" stroke="#10B981" strokeWidth={2} dot={false} />
               </LineChart>
@@ -220,7 +218,7 @@ export default function AnalyticsView() {
         {/* Card 2: AC Energy Breakdown */}
         <div className="glass-card p-3.5 flex flex-col">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
+            <span className="text-xs font-extrabold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
               AC Energy Breakdown
             </span>
             <span className="text-[10px] text-slate-400 font-bold">Room Share</span>
@@ -243,7 +241,9 @@ export default function AnalyticsView() {
                 </Pie>
                 <Tooltip
                   formatter={(val) => [metric === 'cost' ? `₹${val}` : `${val} kWh`, 'Share']}
-                  contentStyle={{ backgroundColor: '#0F172A', borderRadius: '8px', color: '#fff', fontSize: '11px' }}
+                  contentStyle={{ backgroundColor: '#0F172A', borderColor: '#334155', borderRadius: '10px', color: '#F8FAFC', fontSize: '11px' }}
+                  itemStyle={{ color: '#F8FAFC' }}
+                  labelStyle={{ color: '#94A3B8', fontWeight: 600 }}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -253,7 +253,7 @@ export default function AnalyticsView() {
         {/* Card 3: Today Hourly Pattern */}
         <div className="glass-card p-3.5 flex flex-col">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
+            <span className="text-xs font-extrabold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
               Today Pattern
             </span>
             <span className="text-[10px] text-slate-400 font-bold">Hourly Avg</span>
@@ -261,12 +261,15 @@ export default function AnalyticsView() {
           <div className="h-44 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={hourlyData} margin={{ top: 0, right: 0, left: -25, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.2)" />
                 <XAxis dataKey="hour" stroke="#94A3B8" fontSize={9} tickLine={false} />
                 <YAxis stroke="#94A3B8" fontSize={9} tickLine={false} />
                 <Tooltip
                   formatter={(val) => [`${val} kWh`, 'Load']}
-                  contentStyle={{ backgroundColor: '#0F172A', borderRadius: '8px', color: '#fff', fontSize: '11px' }}
+                  contentStyle={{ backgroundColor: '#0F172A', borderColor: '#334155', borderRadius: '10px', color: '#F8FAFC', fontSize: '11px' }}
+                  itemStyle={{ color: '#F8FAFC' }}
+                  labelStyle={{ color: '#94A3B8', fontWeight: 600 }}
+                  cursor={{ fill: 'rgba(148, 163, 184, 0.12)' }}
                 />
                 <Bar dataKey="kwh" fill="#3B82F6" radius={[4, 4, 0, 0]} />
               </BarChart>
@@ -277,7 +280,7 @@ export default function AnalyticsView() {
         {/* Card 4: Weekly Usage Histogram */}
         <div className="glass-card p-3.5 flex flex-col">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
+            <span className="text-xs font-extrabold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
               Weekly Usage
             </span>
             <span className="text-[10px] text-slate-400 font-bold">Daily kWh</span>
@@ -285,12 +288,15 @@ export default function AnalyticsView() {
           <div className="h-44 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={trendData} margin={{ top: 0, right: 0, left: -25, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.2)" />
                 <XAxis dataKey="date" stroke="#94A3B8" fontSize={9} tickLine={false} />
                 <YAxis stroke="#94A3B8" fontSize={9} tickLine={false} />
                 <Tooltip
                   formatter={(val) => [`${val} kWh`, 'Usage']}
-                  contentStyle={{ backgroundColor: '#0F172A', borderRadius: '8px', color: '#fff', fontSize: '11px' }}
+                  contentStyle={{ backgroundColor: '#0F172A', borderColor: '#334155', borderRadius: '10px', color: '#F8FAFC', fontSize: '11px' }}
+                  itemStyle={{ color: '#F8FAFC' }}
+                  labelStyle={{ color: '#94A3B8', fontWeight: 600 }}
+                  cursor={{ fill: 'rgba(148, 163, 184, 0.12)' }}
                 />
                 <Bar dataKey="energy" fill="#8B5CF6" radius={[4, 4, 0, 0]} />
               </BarChart>
@@ -306,12 +312,9 @@ export default function AnalyticsView() {
           <div className="flex items-center gap-2 mb-3">
             <LeaderboardRoundedIcon sx={{ fontSize: 20, color: '#F59E0B' }} />
             <div>
-              <h3 className="text-sm font-extrabold text-slate-900 leading-tight">
+              <h3 className="text-sm font-extrabold text-slate-900 dark:text-white leading-tight">
                 Circuit Consumption Ranking
               </h3>
-              <p className="text-[11px] text-slate-500">
-                Sorted by highest {metric === 'cost' ? 'billing' : 'kWh draw'} this period
-              </p>
             </div>
           </div>
 
@@ -321,7 +324,7 @@ export default function AnalyticsView() {
               .map((r, i) => {
                 const sharePct = totalValue > 0 ? (r.value / totalValue) * 100 : 0;
                 return (
-                  <div key={r.id} className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col gap-1.5">
+                  <div key={r.id} className="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 flex flex-col gap-1.5">
                     <div className="flex justify-between items-center text-xs">
                       <div className="flex items-center gap-2">
                         <span
@@ -329,21 +332,21 @@ export default function AnalyticsView() {
                             i === 0
                               ? 'bg-amber-400 text-amber-950 shadow-xs'
                               : i === 1
-                              ? 'bg-slate-300 text-slate-800'
+                              ? 'bg-slate-300 dark:bg-slate-600 text-slate-800 dark:text-slate-100'
                               : i === 2
-                              ? 'bg-orange-300 text-orange-950'
-                              : 'bg-slate-100 text-slate-600'
+                              ? 'bg-orange-300 dark:bg-orange-600 text-orange-950 dark:text-orange-100'
+                              : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
                           }`}
                         >
                           {i + 1}
                         </span>
                         <div>
-                          <b className="text-slate-800">{r.name}</b>
+                          <b className="text-slate-800 dark:text-slate-200">{r.name}</b>
                           <span className="text-slate-400 font-mono text-[10px] ml-1.5">({r.id})</span>
                         </div>
                       </div>
                       <div className="text-right">
-                        <b className="text-slate-900">
+                        <b className="text-slate-900 dark:text-white">
                           {metric === 'cost' ? `₹${r.value}` : `${r.value} kWh`}
                         </b>
                         <span className="text-slate-400 text-[10px] block">
@@ -352,7 +355,7 @@ export default function AnalyticsView() {
                       </div>
                     </div>
                     {/* Share progress bar */}
-                    <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                    <div className="w-full h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-blue-600 rounded-full"
                         style={{ width: `${sharePct}%` }}
@@ -369,17 +372,17 @@ export default function AnalyticsView() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
             <div className="glass-card p-3.5">
               <span className="text-[10px] font-bold text-slate-400 uppercase">Peak Power In History</span>
-              <p className="text-xl font-extrabold text-slate-900 mt-1">4,920 W</p>
-              <span className="text-[10px] text-emerald-600 font-semibold mt-0.5 block">Recorded Friday 15:30</span>
+              <p className="text-xl font-extrabold text-slate-900 dark:text-white mt-1">4,920 W</p>
+              <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold mt-0.5 block">Recorded Friday 15:30</span>
             </div>
             <div className="glass-card p-3.5">
               <span className="text-[10px] font-bold text-slate-400 uppercase">Estimated Monthly Bill</span>
-              <p className="text-xl font-extrabold text-emerald-600 mt-1">₹52,480</p>
+              <p className="text-xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1">₹52,480</p>
               <span className="text-[10px] text-slate-400 font-semibold mt-0.5 block">Based on 30-day forecast</span>
             </div>
             <div className="glass-card p-3.5">
               <span className="text-[10px] font-bold text-slate-400 uppercase">Estimated Monthly kWh</span>
-              <p className="text-xl font-extrabold text-purple-600 mt-1">6,174 kWh</p>
+              <p className="text-xl font-extrabold text-purple-600 dark:text-purple-400 mt-1">6,174 kWh</p>
               <span className="text-[10px] text-slate-400 font-semibold mt-0.5 block">Avg 205.8 kWh/day</span>
             </div>
           </div>
@@ -388,16 +391,13 @@ export default function AnalyticsView() {
           <div className="glass-card p-3.5 flex-1 flex flex-col">
             <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
               <div>
-                <h3 className="text-sm font-extrabold text-slate-900">
+                <h3 className="text-sm font-extrabold text-slate-900 dark:text-white">
                   Telemetry & System Activity Feed
                 </h3>
-                <p className="text-[11px] text-slate-500">
-                  Hardware events, relay commands & packet sync log
-                </p>
               </div>
 
               {/* Filter Tabs */}
-              <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg text-[11px] font-bold">
+              <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-0.5 rounded-lg text-[11px] font-bold border border-slate-200/80 dark:border-slate-700">
                 {['all', 'ok', 'warn', 'system'].map((f) => (
                   <button
                     key={f}
@@ -405,8 +405,8 @@ export default function AnalyticsView() {
                     onClick={() => setActivityFilter(f)}
                     className={`px-2 py-0.5 rounded-md uppercase transition-all ${
                       activityFilter === f
-                        ? 'bg-white text-slate-900 shadow-2xs font-extrabold'
-                        : 'text-slate-500 hover:text-slate-800'
+                        ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-2xs font-extrabold'
+                        : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white'
                     }`}
                   >
                     {f}
@@ -419,7 +419,7 @@ export default function AnalyticsView() {
               {filteredActivity.map((act) => (
                 <div
                   key={act.id}
-                  className="p-2.5 bg-slate-50 rounded-xl border border-slate-200/80 flex items-start justify-between gap-3 text-xs"
+                  className="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200/80 dark:border-slate-700/80 flex items-start justify-between gap-3 text-xs"
                 >
                   <div className="flex items-start gap-2">
                     <span
@@ -432,8 +432,8 @@ export default function AnalyticsView() {
                       }`}
                     />
                     <div>
-                      <b className="text-slate-900 font-bold block">{act.title}</b>
-                      <p className="text-[11px] text-slate-500 mt-0.5">{act.desc}</p>
+                      <b className="text-slate-900 dark:text-white font-bold block">{act.title}</b>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">{act.desc}</p>
                     </div>
                   </div>
                   <span className="text-[10px] text-slate-400 font-mono flex-shrink-0">

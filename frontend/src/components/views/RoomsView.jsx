@@ -50,9 +50,6 @@ export default function RoomsView() {
           <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100 leading-tight">
             All Configured Rooms ({roomsData.length})
           </h2>
-          <p className="text-xs text-slate-600 dark:text-slate-400 font-semibold leading-tight mt-0.5">
-            Complete building inventory, including rooms hidden from main dashboard
-          </p>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto">

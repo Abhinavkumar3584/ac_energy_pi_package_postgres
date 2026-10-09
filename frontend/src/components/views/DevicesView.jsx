@@ -36,12 +36,9 @@ export default function DevicesView() {
             </span>
             <DevicesRoundedIcon sx={{ fontSize: 18, color: '#3B82F6' }} />
           </div>
-          <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-2">
+          <p className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-2">
             {totalRooms}
           </p>
-          <span className="text-[10px] text-slate-400 mt-1 block">
-            Configured ESP-01 room endpoints
-          </span>
         </div>
 
         <div className="glass-card p-3.5 border-l-4 border-l-emerald-600 flex flex-col justify-between">
@@ -51,12 +48,9 @@ export default function DevicesView() {
             </span>
             <CellTowerRoundedIcon sx={{ fontSize: 18, color: '#059669' }} />
           </div>
-          <p className="text-xl sm:text-2xl font-extrabold text-emerald-600 mt-2">
+          <p className="text-xl sm:text-2xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-2">
             {onlineCount} / {totalRooms}
           </p>
-          <span className="text-[10px] text-slate-400 mt-1 block">
-            Nodes actively transmitting telemetry
-          </span>
         </div>
 
         <div className="glass-card p-3.5 border-l-4 border-l-purple-600 flex flex-col justify-between">
@@ -66,12 +60,9 @@ export default function DevicesView() {
             </span>
             <CheckCircleRoundedIcon sx={{ fontSize: 18, color: '#8B5CF6' }} />
           </div>
-          <p className="text-xl sm:text-2xl font-extrabold text-purple-600 mt-2">
+          <p className="text-xl sm:text-2xl font-extrabold text-purple-600 dark:text-purple-400 mt-2">
             {pzemOkCount} / {totalRooms}
           </p>
-          <span className="text-[10px] text-slate-400 mt-1 block">
-            Healthy electrical metering sensors
-          </span>
         </div>
 
         <div className="glass-card p-3.5 border-l-4 border-l-amber-500 flex flex-col justify-between">
@@ -81,12 +72,9 @@ export default function DevicesView() {
             </span>
             <AllInboxRoundedIcon sx={{ fontSize: 18, color: '#D97706' }} />
           </div>
-          <p className="text-xl sm:text-2xl font-extrabold text-amber-600 mt-2">
+          <p className="text-xl sm:text-2xl font-extrabold text-amber-600 dark:text-amber-400 mt-2">
             {totalPackets.toLocaleString()}
           </p>
-          <span className="text-[10px] text-slate-400 mt-1 block">
-            Total session packets ingested
-          </span>
         </div>
       </div>
 
@@ -95,12 +83,9 @@ export default function DevicesView() {
         {/* Table Toolbar */}
         <div className="flex justify-between items-center mb-3.5 flex-wrap gap-3.5">
           <div>
-            <h3 className="text-base sm:text-lg font-extrabold text-slate-900 leading-tight">
+            <h3 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white leading-tight">
               ESP-01 Node Telemetry &amp; MAC Health
             </h3>
-            <p className="text-xs text-slate-500 font-medium mt-0.5">
-              MAC address routing, hardware transmission rates & meter status
-            </p>
           </div>
 
           <div className="relative w-full sm:w-64">
@@ -112,7 +97,7 @@ export default function DevicesView() {
               placeholder="Search room, MAC..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              className="w-full pl-9 pr-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
             />
           </div>
         </div>
@@ -121,7 +106,7 @@ export default function DevicesView() {
         <div className="overflow-x-auto w-full">
           <table className="w-full min-w-[760px] text-left border-collapse text-xs sm:text-sm">
             <thead>
-              <tr className="border-b border-slate-200 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+              <tr className="border-b border-slate-200 dark:border-slate-700 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
                 <th className="py-2.5 px-3">Room Name &amp; ID</th>
                 <th className="py-2.5 px-3">Node MAC</th>
                 <th className="py-2.5 px-3">Node State</th>
@@ -132,7 +117,7 @@ export default function DevicesView() {
                 <th className="py-2.5 px-3 text-right">Health Score</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               {filtered.map((room) => {
                 const reading = liveData[room.room_id];
                 const isOnline = !!reading;
@@ -147,15 +132,15 @@ export default function DevicesView() {
                 else if (!isPzemOk) health = 55;
 
                 return (
-                  <tr key={room.room_id} className="hover:bg-slate-50/70 transition-colors">
+                  <tr key={room.room_id} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/50 transition-colors">
                     <td className="py-3 px-3">
-                      <b className="text-slate-800 font-bold block">{room.room_name}</b>
+                      <b className="text-slate-800 dark:text-slate-200 font-bold block">{room.room_name}</b>
                       <span className="text-[10px] text-slate-400 font-mono font-bold">
                         {room.room_id}
                       </span>
                     </td>
                     <td className="py-3 px-3">
-                      <code className="text-blue-600 font-mono font-bold text-xs bg-blue-50 px-2 py-0.5 rounded">
+                      <code className="text-blue-600 dark:text-blue-400 font-mono font-bold text-xs bg-blue-50 dark:bg-blue-950/60 border border-blue-200/60 dark:border-blue-800/50 px-2 py-0.5 rounded">
                         {mac}
                       </code>
                     </td>
@@ -163,8 +148,8 @@ export default function DevicesView() {
                       <span
                         className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
                           isOnline
-                            ? 'bg-emerald-100 text-emerald-800'
-                            : 'bg-slate-100 text-slate-600'
+                            ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border dark:border-emerald-800/40'
+                            : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 dark:border dark:border-slate-700'
                         }`}
                       >
                         <span
@@ -179,30 +164,30 @@ export default function DevicesView() {
                       <span
                         className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
                           isPzemOk
-                            ? 'bg-emerald-100 text-emerald-800'
-                            : 'bg-rose-100 text-rose-800'
+                            ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border dark:border-emerald-800/40'
+                            : 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 dark:border dark:border-rose-800/40'
                         }`}
                       >
                         {isPzemOk ? '⚡ PZEM OK' : '⚠️ SENSOR ERR'}
                       </span>
                     </td>
-                    <td className="py-3 px-3 font-bold text-slate-800">
+                    <td className="py-3 px-3 font-bold text-slate-800 dark:text-slate-200">
                       {power.toFixed(0)} W
                     </td>
-                    <td className="py-3 px-3 font-bold text-slate-700">
+                    <td className="py-3 px-3 font-bold text-slate-700 dark:text-slate-300">
                       {energy.toFixed(2)} kWh
                     </td>
-                    <td className="py-3 px-3 font-mono text-slate-500 font-bold">
+                    <td className="py-3 px-3 font-mono text-slate-500 dark:text-slate-400 font-bold">
                       1,420
                     </td>
                     <td className="py-3 px-3 text-right">
                       <span
                         className={`font-bold text-xs ${
                           health > 80
-                            ? 'text-emerald-600'
+                            ? 'text-emerald-600 dark:text-emerald-400'
                             : health > 50
-                            ? 'text-amber-600'
-                            : 'text-rose-600'
+                            ? 'text-amber-600 dark:text-amber-400'
+                            : 'text-rose-600 dark:text-rose-400'
                         }`}
                       >
                         {health}%

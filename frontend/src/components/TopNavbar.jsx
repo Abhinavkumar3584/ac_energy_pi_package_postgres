@@ -157,7 +157,7 @@ export default function TopNavbar() {
                   {currentUser.role || 'Operator'}
                 </p>
               </div>
-              <KeyboardArrowDownRoundedIcon sx={{ fontSize: 16, color: '#000000' }} />
+              <KeyboardArrowDownRoundedIcon sx={{ fontSize: 16 }} className="text-slate-800 dark:text-slate-200" />
             </button>
 
             {/* Profile Dropdown Menu */}

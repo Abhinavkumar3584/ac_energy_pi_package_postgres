@@ -40,18 +40,15 @@ export default function RoomWiseShare({ roomsData }) {
   return (
     <div className="glass-card p-3.5 flex flex-col justify-between w-full h-full min-w-0 box-border">
       {/* Header */}
-      <div className="flex justify-between items-start mb-2">
+      <div className="flex justify-between items-center mb-2">
         <div>
-          <h3 className="text-base sm:text-lg font-extrabold text-slate-900 leading-tight">
+          <h3 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white leading-tight">
             Room-wise Share
           </h3>
-          <p className="text-xs text-slate-500 font-medium mt-0.5">
-            Cumulative distribution across units
-          </p>
         </div>
         <a
           href="#rooms-table"
-          className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-0.5"
+          className="text-xs font-bold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 flex items-center gap-0.5"
         >
           View All <ArrowForwardIosRoundedIcon sx={{ fontSize: 10 }} />
         </a>
@@ -62,23 +59,23 @@ export default function RoomWiseShare({ roomsData }) {
         {rooms.map((room) => (
           <div
             key={room.name}
-            className="p-3 rounded-2xl bg-slate-50/90 border border-slate-200/80"
+            className="p-3 rounded-2xl bg-slate-50/90 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 transition-colors"
           >
             <div className="flex justify-between items-center mb-2">
               <div className="flex items-center gap-2">
                 <span className={`w-2 h-2 rounded-full ${room.dotColor}`} />
-                <span className="text-xs font-bold text-slate-900">{room.name}</span>
-                <span className="text-[10px] font-semibold text-slate-600 bg-slate-200 px-1.5 py-0.5 rounded-md">
+                <span className="text-xs font-bold text-slate-900 dark:text-white">{room.name}</span>
+                <span className="text-[10px] font-semibold text-slate-600 dark:text-slate-300 bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded-md">
                   {room.type}
                 </span>
               </div>
-              <span className="text-xs font-extrabold text-slate-900">
-                {room.kwh} <span className="text-[10px] font-medium text-slate-500">kWh</span>
+              <span className="text-xs font-extrabold text-slate-900 dark:text-white">
+                {room.kwh} <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400">kWh</span>
               </span>
             </div>
 
             {/* Progress Bar */}
-            <div className="w-full h-2 rounded-full bg-slate-200/90 overflow-hidden mb-1.5">
+            <div className="w-full h-2 rounded-full bg-slate-200/90 dark:bg-slate-700 overflow-hidden mb-1.5">
               <div
                 className={`h-full rounded-full transition-all duration-500 ${room.barColor}`}
                 style={{ width: `${room.share}%` }}
@@ -86,7 +83,7 @@ export default function RoomWiseShare({ roomsData }) {
             </div>
 
             <div className="flex justify-between items-center text-[11px]">
-              <span className="text-slate-500 font-medium">
+              <span className="text-slate-500 dark:text-slate-400 font-medium">
                 Operational: {room.operational}
               </span>
               <span className={`font-bold ${room.textColor}`}>

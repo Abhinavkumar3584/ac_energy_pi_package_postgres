@@ -53,12 +53,9 @@ export default function ReportsView() {
       {/* Header Bar */}
       <div className="glass-card p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5">
         <div>
-          <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 leading-tight">
+          <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white leading-tight">
             {periodLabel} Energy &amp; Billing Report
           </h2>
-          <p className="text-xs text-slate-500 font-medium mt-0.5">
-            Uses verified daily historical records stored in PostgreSQL with dynamic tariff computations
-          </p>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
@@ -66,7 +63,7 @@ export default function ReportsView() {
           <select
             value={period}
             onChange={(e) => setPeriod(e.target.value)}
-            className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 font-bold focus:outline-none cursor-pointer"
+            className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs text-slate-800 dark:text-slate-200 font-bold focus:outline-none cursor-pointer"
           >
             <option value="weekly">📅 Weekly Report (7 Days)</option>
             <option value="monthly">📅 Monthly Report (30 Days)</option>
@@ -77,7 +74,7 @@ export default function ReportsView() {
           <button
             type="button"
             onClick={exportHistoryCSV}
-            className="px-3.5 py-1.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-xs font-bold text-slate-700 flex items-center gap-1.5 transition-colors shadow-2xs"
+            className="px-3.5 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 transition-colors shadow-2xs"
           >
             <FileDownloadRoundedIcon sx={{ fontSize: 16 }} />
             <span>Export CSV</span>
@@ -104,12 +101,9 @@ export default function ReportsView() {
             </span>
             <BoltRoundedIcon sx={{ fontSize: 18, color: '#3B82F6' }} />
           </div>
-          <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-2">
+          <p className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-2">
             {totalPeriodEnergy.toFixed(1)} kWh
           </p>
-          <span className="text-[10px] text-slate-400 mt-1 block">
-            Aggregated consumption for {periodLabel.toLowerCase()} timeframe
-          </span>
         </div>
 
         <div className="glass-card p-3.5 border-l-4 border-l-emerald-600 flex flex-col justify-between">
@@ -119,12 +113,9 @@ export default function ReportsView() {
             </span>
             <CurrencyRupeeRoundedIcon sx={{ fontSize: 18, color: '#059669' }} />
           </div>
-          <p className="text-xl sm:text-2xl font-extrabold text-emerald-600 mt-2">
+          <p className="text-xl sm:text-2xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-2">
             ₹{totalPeriodCost.toFixed(2)}
           </p>
-          <span className="text-[10px] text-slate-400 mt-1 block">
-            Calculated electricity charges at ₹8.50/kWh
-          </span>
         </div>
 
         <div className="glass-card p-3.5 border-l-4 border-l-purple-600 flex flex-col justify-between">
@@ -134,12 +125,9 @@ export default function ReportsView() {
             </span>
             <MeetingRoomRoundedIcon sx={{ fontSize: 18, color: '#8B5CF6' }} />
           </div>
-          <p className="text-xl sm:text-2xl font-extrabold text-purple-600 mt-2">
+          <p className="text-xl sm:text-2xl font-extrabold text-purple-600 dark:text-purple-400 mt-2">
             {activeRoomsCount} / {reportRows.length}
           </p>
-          <span className="text-[10px] text-slate-400 mt-1 block">
-            Circuits with verified load activity
-          </span>
         </div>
 
         <div className="glass-card p-3.5 border-l-4 border-l-amber-500 flex flex-col justify-between">
@@ -149,19 +137,16 @@ export default function ReportsView() {
             </span>
             <AutoAwesomeRoundedIcon sx={{ fontSize: 18, color: '#D97706' }} />
           </div>
-          <p className="text-xl sm:text-2xl font-extrabold text-amber-600 mt-2">
+          <p className="text-xl sm:text-2xl font-extrabold text-amber-600 dark:text-amber-400 mt-2">
             {(totalTodayEnergy * 30).toFixed(0)} kWh
           </p>
-          <span className="text-[10px] text-slate-400 mt-1 block">
-            Est. ₹{(totalTodayEnergy * 30 * 8.5).toFixed(0)} projected bill
-          </span>
         </div>
       </div>
 
       {/* Consumption Table with Search & Total Footer */}
       <div className="glass-card p-3.5 w-full">
         <div className="flex justify-between items-center mb-3.5 flex-wrap gap-3.5">
-          <span className="text-xs font-bold text-slate-500">
+          <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
             Showing {filteredRows.length} of {reportRows.length} Rooms
           </span>
 
@@ -174,7 +159,7 @@ export default function ReportsView() {
               placeholder="Search room name or ID..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              className="w-full pl-9 pr-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
             />
           </div>
         </div>
@@ -182,7 +167,7 @@ export default function ReportsView() {
         <div className="overflow-x-auto w-full">
           <table className="w-full min-w-[760px] text-left border-collapse text-xs sm:text-sm">
             <thead>
-              <tr className="border-b border-slate-200 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+              <tr className="border-b border-slate-200 dark:border-slate-700 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
                 <th className="py-2.5 px-3">Room Name &amp; ID</th>
                 <th className="py-2.5 px-3 w-40">Share %</th>
                 <th className="py-2.5 px-3">{periodLabel} Usage</th>
@@ -192,21 +177,21 @@ export default function ReportsView() {
                 <th className="py-2.5 px-3 text-right">Relay Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               {filteredRows.map((r) => {
                 const sharePct = totalPeriodEnergy > 0 ? (r.periodKwh / totalPeriodEnergy) * 100 : 0;
                 return (
-                  <tr key={r.id} className="hover:bg-slate-50/70 transition-colors">
+                  <tr key={r.id} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/50 transition-colors">
                     <td className="py-3 px-3">
-                      <b className="text-slate-800 font-bold block">{r.name}</b>
+                      <b className="text-slate-800 dark:text-slate-200 font-bold block">{r.name}</b>
                       <span className="text-[10px] text-slate-400 font-mono font-bold">{r.id}</span>
                     </td>
                     <td className="py-3 px-3">
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-slate-700 w-10 text-[11px]">
+                        <span className="font-bold text-slate-700 dark:text-slate-300 w-10 text-[11px]">
                           {sharePct.toFixed(1)}%
                         </span>
-                        <div className="flex-1 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                        <div className="flex-1 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                           <div
                             className="h-full bg-blue-600 rounded-full"
                             style={{ width: `${sharePct}%` }}
@@ -214,24 +199,24 @@ export default function ReportsView() {
                         </div>
                       </div>
                     </td>
-                    <td className="py-3 px-3 font-bold text-slate-800">
+                    <td className="py-3 px-3 font-bold text-slate-800 dark:text-slate-200">
                       {r.periodKwh.toFixed(1)} kWh
                     </td>
-                    <td className="py-3 px-3 font-bold text-emerald-600">
+                    <td className="py-3 px-3 font-bold text-emerald-600 dark:text-emerald-400">
                       ₹{r.periodCost.toFixed(2)}
                     </td>
-                    <td className="py-3 px-3 font-bold text-slate-700">
+                    <td className="py-3 px-3 font-bold text-slate-700 dark:text-slate-300">
                       {r.dailyKwh.toFixed(2)} kWh
                     </td>
-                    <td className="py-3 px-3 text-slate-600 font-semibold">
+                    <td className="py-3 px-3 text-slate-600 dark:text-slate-400 font-semibold">
                       {r.limit > 0 ? `${r.limit.toFixed(0)} kWh` : 'None'}
                     </td>
                     <td className="py-3 px-3 text-right">
                       <span
                         className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-extrabold ${
                           r.relay === 'ON'
-                            ? 'bg-emerald-100 text-emerald-800'
-                            : 'bg-rose-100 text-rose-800'
+                            ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border dark:border-emerald-800/40'
+                            : 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 dark:border dark:border-rose-800/40'
                         }`}
                       >
                         RELAY {r.relay}
@@ -243,22 +228,22 @@ export default function ReportsView() {
             </tbody>
             {/* Totals Footer */}
             <tfoot>
-              <tr className="border-t-2 border-slate-300 font-extrabold text-xs bg-slate-50/80">
-                <td className="py-3 px-3 text-slate-900">
+              <tr className="border-t-2 border-slate-300 dark:border-slate-700 font-extrabold text-xs bg-slate-50/80 dark:bg-slate-800/80">
+                <td className="py-3 px-3 text-slate-900 dark:text-white">
                   TOTAL ({filteredRows.length} ROOMS)
                 </td>
-                <td className="py-3 px-3 text-slate-700">100% Total</td>
-                <td className="py-3 px-3 text-slate-900">
+                <td className="py-3 px-3 text-slate-700 dark:text-slate-300">100% Total</td>
+                <td className="py-3 px-3 text-slate-900 dark:text-white">
                   {totalPeriodEnergy.toFixed(1)} kWh
                 </td>
-                <td className="py-3 px-3 text-emerald-700">
+                <td className="py-3 px-3 text-emerald-700 dark:text-emerald-400">
                   ₹{totalPeriodCost.toFixed(2)}
                 </td>
-                <td className="py-3 px-3 text-slate-900">
+                <td className="py-3 px-3 text-slate-900 dark:text-white">
                   {totalTodayEnergy.toFixed(2)} kWh
                 </td>
                 <td className="py-3 px-3 text-slate-400">&mdash;</td>
-                <td className="py-3 px-3 text-right text-emerald-700">Active</td>
+                <td className="py-3 px-3 text-right text-emerald-700 dark:text-emerald-400">Active</td>
               </tr>
             </tfoot>
           </table>

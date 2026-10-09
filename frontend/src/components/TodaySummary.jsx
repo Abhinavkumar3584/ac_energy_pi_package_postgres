@@ -40,34 +40,31 @@ export default function TodaySummary() {
   return (
     <div className="glass-card p-3.5 flex flex-col justify-between w-full h-full min-w-0 box-border">
       <div className="mb-2">
-        <h3 className="text-base sm:text-lg font-extrabold text-slate-900 leading-tight">
+        <h3 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white leading-tight">
           Today's Summary
         </h3>
-        <p className="text-xs text-slate-500 font-medium mt-0.5">
-          Instant telemetry aggregates
-        </p>
       </div>
 
       <div className="flex flex-col gap-2 my-auto">
         {summaryItems.map((item) => (
           <div
             key={item.label}
-            className="flex items-center gap-3 p-2.5 px-3 rounded-2xl bg-slate-50/90 border border-slate-200/80"
+            className="flex items-center gap-3 p-2.5 px-3 rounded-2xl bg-slate-50/90 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 transition-colors"
           >
-            <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${item.bg}`}>
+            <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${item.bg} dark:bg-opacity-20`}>
               {item.icon}
             </div>
 
             <div className="min-w-0 flex-1">
-              <span className="text-[10px] font-bold text-slate-500 tracking-wider uppercase leading-none block">
+              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 tracking-wider uppercase leading-none block">
                 {item.label}
               </span>
               <div className="flex items-baseline gap-1 mt-0.5">
-                <span className="text-base sm:text-lg font-extrabold text-slate-900 leading-tight">
+                <span className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white leading-tight">
                   {item.value}
                 </span>
                 {item.unit && (
-                  <span className={`text-xs font-bold ${item.unitColor || 'text-slate-500'}`}>
+                  <span className={`text-xs font-bold ${item.unitColor || 'text-slate-500 dark:text-slate-400'}`}>
                     {item.unit}
                   </span>
                 )}
