@@ -14,17 +14,15 @@
   }
 
   html, body {
-    @apply w-full max-w-[100vw] overflow-x-hidden m-0 p-0 font-sans min-h-screen text-black;
-    color: #000000;
-    background-color: #f1f5f9;
+    @apply w-full max-w-[100vw] overflow-x-hidden m-0 p-0 font-sans min-h-screen text-slate-900;
+    color: #0f172a;
+    background-color: #f8fafc;
     background-image: 
-      linear-gradient(180deg, rgba(235, 245, 255, 0.45) 0%, rgba(255, 255, 255, 0.70) 100%),
-      url('/background.png');
-    background-size: cover;
-    background-position: center top;
-    background-attachment: fixed;
+      radial-gradient(at 0% 0%, rgba(224, 231, 255, 0.6) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(241, 245, 249, 0.8) 0px, transparent 50%),
+      radial-gradient(at 50% 100%, rgba(248, 250, 252, 1) 0px, transparent 50%);
     background-repeat: no-repeat;
-    transition: background-image 0.5s ease-in-out, background-color 0.4s ease, color 0.3s ease;
+    background-attachment: scroll;
   }
 
   html.dark, html.dark body {
@@ -32,12 +30,10 @@
     color: #f1f5f9;
     background-color: #0b0f19;
     background-image: 
-      linear-gradient(180deg, rgba(11, 15, 25, 0.72) 0%, rgba(15, 23, 42, 0.90) 100%),
-      url('/nightmode_background.png');
-    background-size: cover;
-    background-position: center top;
-    background-attachment: fixed;
+      radial-gradient(at 10% 10%, rgba(30, 58, 138, 0.18) 0px, transparent 40%),
+      radial-gradient(at 90% 90%, rgba(15, 23, 42, 0.95) 0px, transparent 50%);
     background-repeat: no-repeat;
+    background-attachment: scroll;
   }
 
   #root {
@@ -47,7 +43,7 @@
 
 @layer utilities {
   .glass-card {
-    @apply bg-white/95 backdrop-blur-xl rounded-2xl border border-white/80 shadow-[0_8px_20px_-4px_rgba(15,23,42,0.05)] transition-colors duration-300;
+    @apply bg-white/95 rounded-2xl border border-slate-200/80 shadow-[0_4px_16px_-2px_rgba(15,23,42,0.04)] transition-colors duration-200;
   }
 
   .glass-card h1,
@@ -58,9 +54,9 @@
   }
 
   .dark .glass-card {
-    background-color: rgba(15, 23, 42, 0.82) !important;
-    border-color: rgba(255, 255, 255, 0.09) !important;
-    box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+    background-color: rgba(15, 23, 42, 0.92) !important;
+    border-color: rgba(51, 65, 85, 0.65) !important;
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
     color: #f8fafc !important;
   }
 }

@@ -446,6 +446,7 @@ export function AppProvider({ children }) {
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [isAlertsDrawerOpen, setIsAlertsDrawerOpen] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   // Serial Console Stream Logs
   const [serialLogs, setSerialLogs] = useState([
@@ -456,15 +457,20 @@ export function AppProvider({ children }) {
     'RX ← {"type":"energy","room_id":"ROOM_104","voltage":240.2,"current":3.48,"power":832.0,"energy":115.340,"pzem_ok":true}',
   ]);
 
-  // Fetch real backend API if running
+  // Fetch real backend API if running (optimized lightweight polling)
   const refreshBackend = useCallback(async () => {
+    if (typeof document !== 'undefined' && document.hidden) return;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2000);
+
     try {
       const [resStatus, resControl, resLive, resPorts] = await Promise.allSettled([
-        fetch('/api/status', { cache: 'no-store' }),
-        fetch('/api/control', { cache: 'no-store' }),
-        fetch('/api/live', { cache: 'no-store' }),
-        fetch('/api/ports', { cache: 'no-store' }),
+        fetch('/api/status', { cache: 'no-store', signal: controller.signal }),
+        fetch('/api/control', { cache: 'no-store', signal: controller.signal }),
+        fetch('/api/live', { cache: 'no-store', signal: controller.signal }),
+        fetch('/api/ports', { cache: 'no-store', signal: controller.signal }),
       ]);
+      clearTimeout(timeoutId);
 
       if (resStatus.status === 'fulfilled' && resStatus.value.ok) {
         const data = await resStatus.value.json();
@@ -482,7 +488,6 @@ export function AppProvider({ children }) {
         const data = await resControl.value.json();
         if (data?.rooms && data.rooms.length > 0) {
           setRoomsData((prev) => {
-            // Merge with local config
             const map = new Map(data.rooms.map((r) => [r.room_id, r]));
             return prev.map((oldR) => (map.has(oldR.room_id) ? { ...oldR, ...map.get(oldR.room_id) } : oldR));
           });
@@ -493,7 +498,6 @@ export function AppProvider({ children }) {
         const data = await resLive.value.json();
         if (data?.rooms && Object.keys(data.rooms).length > 0) {
           setLiveData((prev) => ({ ...prev, ...data.rooms }));
-          // Append to serial logs
           const sample = Object.values(data.rooms)[0];
           if (sample) {
             setSerialLogs((logs) => [
@@ -510,7 +514,7 @@ export function AppProvider({ children }) {
 
   useEffect(() => {
     refreshBackend();
-    const timer = setInterval(refreshBackend, 3000);
+    const timer = setInterval(refreshBackend, 6000);
     return () => clearInterval(timer);
   }, [refreshBackend]);
 
@@ -662,6 +666,8 @@ export function AppProvider({ children }) {
         setIsSearchModalOpen,
         isAlertsDrawerOpen,
         setIsAlertsDrawerOpen,
+        isMobileSidebarOpen,
+        setIsMobileSidebarOpen,
         serialLogs,
         setSerialLogs,
         handleToggleRelay,

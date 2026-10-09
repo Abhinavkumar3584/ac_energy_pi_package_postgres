@@ -9,6 +9,7 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
+import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import { useApp } from '../context/AppContext';
 
 export default function TopNavbar() {
@@ -20,6 +21,7 @@ export default function TopNavbar() {
     setIsConnectModalOpen,
     setIsSearchModalOpen,
     setIsAlertsDrawerOpen,
+    setIsMobileSidebarOpen,
     alerts,
     siteProfile,
     currentUser,
@@ -47,7 +49,18 @@ export default function TopNavbar() {
   return (
     <header className="fixed top-3.5 left-3.5 md:left-[298px] right-3.5 z-40 box-border">
       {/* Main Glass Navbar - strictly single line, fixed height, exact 14px outer margins */}
-      <div className="glass-card h-[56px] px-3.5 flex items-center justify-between flex-nowrap gap-3 w-full box-border relative z-40">
+      <div className="glass-card h-[56px] px-3.5 flex items-center justify-between flex-nowrap gap-2.5 w-full box-border relative z-40">
+        {/* Mobile Hamburger Drawer Toggle Button */}
+        <button
+          type="button"
+          onClick={() => setIsMobileSidebarOpen(true)}
+          className="md:hidden w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-200 transition-colors flex-shrink-0 cursor-pointer"
+          title="Open Navigation Menu"
+          aria-label="Open Navigation Drawer"
+        >
+          <MenuRoundedIcon sx={{ fontSize: 20 }} />
+        </button>
+
         {/* Left: Expanded Search Bar */}
         <div className="flex-1 max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl min-w-0">
           <button
@@ -124,7 +137,7 @@ export default function TopNavbar() {
           {/* Cloud Sync Icon */}
           <div
             title="Telemetry Sync: Realtime"
-            className="w-8 h-8 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-emerald-500 flex-shrink-0"
+            className="hidden sm:flex w-8 h-8 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 items-center justify-center text-emerald-500 flex-shrink-0"
           >
             <CloudDoneRoundedIcon sx={{ fontSize: 18, color: '#10B981' }} />
           </div>
@@ -133,10 +146,11 @@ export default function TopNavbar() {
           <button
             type="button"
             onClick={() => setIsConnectModalOpen(true)}
-            className="h-8 inline-flex items-center gap-1 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-500/20 transition-all active:scale-95 flex-shrink-0"
+            className="h-8 inline-flex items-center gap-1 px-2.5 sm:px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-500/20 transition-all active:scale-95 flex-shrink-0"
+            title="Connect Hardware Port"
           >
             <UsbRoundedIcon sx={{ fontSize: 16 }} />
-            <span>{isConnected && hubStatus?.port ? `Port: ${hubStatus.port}` : 'Connect Port'}</span>
+            <span className="hidden sm:inline">{isConnected && hubStatus?.port ? `Port: ${hubStatus.port}` : 'Connect Port'}</span>
           </button>
 
           {/* Admin Profile Dropdown */}
