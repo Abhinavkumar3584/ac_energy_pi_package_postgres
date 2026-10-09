@@ -17,23 +17,40 @@
     @apply w-full max-w-[100vw] overflow-x-hidden m-0 p-0 font-sans min-h-screen text-slate-900;
     color: #0f172a;
     background-color: #f8fafc;
+  }
+
+  /* GPU-Accelerated Hardware-Composited Background Layer (Smooth 60/120 FPS, Zero Scroll Repaint) */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-color: #f8fafc;
     background-image: 
-      radial-gradient(at 0% 0%, rgba(224, 231, 255, 0.6) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, rgba(241, 245, 249, 0.8) 0px, transparent 50%),
-      radial-gradient(at 50% 100%, rgba(248, 250, 252, 1) 0px, transparent 50%);
+      linear-gradient(180deg, rgba(248, 250, 252, 0.40) 0%, rgba(255, 255, 255, 0.70) 100%),
+      url('/bg-light.jpg');
+    background-size: cover;
+    background-position: center top;
     background-repeat: no-repeat;
-    background-attachment: scroll;
+    pointer-events: none;
+    transform: translateZ(0);
+    will-change: transform;
   }
 
   html.dark, html.dark body {
     @apply text-slate-100;
     color: #f1f5f9;
     background-color: #0b0f19;
+  }
+
+  html.dark body::before {
+    background-color: #0b0f19;
     background-image: 
-      radial-gradient(at 10% 10%, rgba(30, 58, 138, 0.18) 0px, transparent 40%),
-      radial-gradient(at 90% 90%, rgba(15, 23, 42, 0.95) 0px, transparent 50%);
+      linear-gradient(180deg, rgba(11, 15, 25, 0.68) 0%, rgba(15, 23, 42, 0.88) 100%),
+      url('/bg-dark.jpg');
+    background-size: cover;
+    background-position: center top;
     background-repeat: no-repeat;
-    background-attachment: scroll;
   }
 
   #root {
