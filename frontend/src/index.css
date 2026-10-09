@@ -1,0 +1,198 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    @apply w-full max-w-[100vw] overflow-x-hidden m-0 p-0 font-sans min-h-screen text-black;
+    color: #000000;
+    background-color: #f1f5f9;
+    background-image: 
+      linear-gradient(180deg, rgba(235, 245, 255, 0.45) 0%, rgba(255, 255, 255, 0.70) 100%),
+      url('/background.png');
+    background-size: cover;
+    background-position: center top;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    transition: background-image 0.5s ease-in-out, background-color 0.4s ease, color 0.3s ease;
+  }
+
+  html.dark, html.dark body {
+    @apply text-slate-100;
+    color: #f1f5f9;
+    background-color: #0b0f19;
+    background-image: 
+      linear-gradient(180deg, rgba(11, 15, 25, 0.72) 0%, rgba(15, 23, 42, 0.90) 100%),
+      url('/nightmode_background.png');
+    background-size: cover;
+    background-position: center top;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+
+  #root {
+    @apply w-full max-w-[100vw] overflow-x-hidden min-h-screen;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-white/95 backdrop-blur-xl rounded-2xl border border-white/80 shadow-[0_8px_20px_-4px_rgba(15,23,42,0.05)] transition-colors duration-300;
+  }
+
+  .glass-card h1,
+  .glass-card h2,
+  .glass-card h3,
+  .glass-card h4 {
+    color: #000000;
+  }
+
+  .dark .glass-card {
+    background-color: rgba(15, 23, 42, 0.82) !important;
+    border-color: rgba(255, 255, 255, 0.09) !important;
+    box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+    color: #f8fafc !important;
+  }
+}
+
+/* Dark Mode Typography & Harmonious Surfaces */
+.dark {
+  color-scheme: dark;
+}
+
+.dark .glass-card h1,
+.dark .glass-card h2,
+.dark .glass-card h3,
+.dark .glass-card h4,
+.dark .glass-card .text-slate-900,
+.dark .glass-card .text-slate-800 {
+  color: #f8fafc !important;
+}
+
+.dark .glass-card .text-slate-700,
+.dark .glass-card .text-slate-600 {
+  color: #cbd5e1 !important;
+}
+
+.dark .glass-card .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+.dark .glass-card .text-slate-400 {
+  color: #64748b !important;
+}
+
+/* Dark Mode Metric Cards (Hardware Row) */
+.dark .bg-indigo-50\/75 {
+  background-color: rgba(30, 27, 75, 0.60) !important;
+  border-color: rgba(99, 102, 241, 0.35) !important;
+}
+
+.dark .bg-indigo-50\/75 .text-slate-900 {
+  color: #f8fafc !important;
+}
+
+.dark .bg-indigo-50\/75 .text-slate-500 {
+  color: #a5b4fc !important;
+}
+
+/* Dark Mode Secondary Surfaces */
+.dark .bg-slate-50,
+.dark .bg-slate-50\/90,
+.dark .bg-slate-50\/80,
+.dark .bg-slate-50\/70,
+.dark .bg-slate-100,
+.dark .bg-slate-100\/90,
+.dark .bg-slate-100\/80 {
+  background-color: rgba(30, 41, 59, 0.65) !important;
+  border-color: rgba(51, 65, 85, 0.7) !important;
+  color: #e2e8f0 !important;
+}
+
+.dark .border-slate-100,
+.dark .border-slate-200,
+.dark .border-slate-200\/80 {
+  border-color: rgba(51, 65, 85, 0.7) !important;
+}
+
+.dark input,
+.dark select {
+  background-color: rgba(15, 23, 42, 0.85) !important;
+  border-color: rgba(51, 65, 85, 0.8) !important;
+  color: #f8fafc !important;
+}
+
+.dark option {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+/* Modals & Dialogs in Dark Mode */
+.dark .bg-white.rounded-2xl,
+.dark .bg-white.rounded-xl {
+  background-color: #0f172a !important;
+  border-color: rgba(51, 65, 85, 0.8) !important;
+  color: #f8fafc !important;
+}
+
+.dark circle[stroke="rgba(226, 232, 240, 0.8)"] {
+  stroke: rgba(51, 65, 85, 0.45) !important;
+}
+
+.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(51, 65, 85, 0.5) !important;
+}
+
+.dark table thead tr {
+  border-color: rgba(51, 65, 85, 0.8) !important;
+}
+
+.dark table tbody tr:hover {
+  background-color: rgba(30, 41, 59, 0.45) !important;
+}
+
+.dark table tfoot tr {
+  background-color: rgba(30, 41, 59, 0.75) !important;
+  border-color: rgba(51, 65, 85, 0.9) !important;
+  color: #f8fafc !important;
+}
+
+/* Custom sleek scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.6);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.8);
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(71, 85, 105, 0.6);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.8);
+}
+
+/* Seamless carousel horizontal scroll without native scrollbars */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
