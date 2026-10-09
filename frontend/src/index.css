@@ -16,41 +16,33 @@
   html, body {
     @apply w-full max-w-[100vw] overflow-x-hidden m-0 p-0 font-sans min-h-screen text-slate-900;
     color: #0f172a;
-    background-color: #f8fafc;
-  }
-
-  /* GPU-Accelerated Hardware-Composited Background Layer (Smooth 60/120 FPS, Zero Scroll Repaint) */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    background-color: #f8fafc;
+    background-color: #f1f5f9;
     background-image: 
-      linear-gradient(180deg, rgba(248, 250, 252, 0.40) 0%, rgba(255, 255, 255, 0.70) 100%),
+      linear-gradient(180deg, rgba(235, 245, 255, 0.35) 0%, rgba(255, 255, 255, 0.65) 100%),
       url('/bg-light.jpg');
     background-size: cover;
     background-position: center top;
+    background-attachment: fixed;
     background-repeat: no-repeat;
-    pointer-events: none;
-    transform: translateZ(0);
-    will-change: transform;
   }
 
   html.dark, html.dark body {
     @apply text-slate-100;
     color: #f1f5f9;
     background-color: #0b0f19;
-  }
-
-  html.dark body::before {
-    background-color: #0b0f19;
     background-image: 
-      linear-gradient(180deg, rgba(11, 15, 25, 0.68) 0%, rgba(15, 23, 42, 0.88) 100%),
+      linear-gradient(180deg, rgba(11, 15, 25, 0.55) 0%, rgba(15, 23, 42, 0.80) 100%),
       url('/bg-dark.jpg');
     background-size: cover;
     background-position: center top;
+    background-attachment: fixed;
     background-repeat: no-repeat;
+  }
+
+  @media (max-width: 768px) {
+    html, body, html.dark, html.dark body {
+      background-attachment: scroll;
+    }
   }
 
   #root {
