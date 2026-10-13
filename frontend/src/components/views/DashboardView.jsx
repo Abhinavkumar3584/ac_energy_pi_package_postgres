@@ -3,7 +3,6 @@ import HeaderStrip from '../HeaderStrip';
 import MetricCards from '../MetricCards';
 import RoomCard from '../RoomCard';
 import TrendChart from '../TrendChart';
-import RoomWiseShare from '../RoomWiseShare';
 import TodaySummary from '../TodaySummary';
 import RoomsOverviewTable from '../RoomsOverviewTable';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
@@ -79,7 +78,7 @@ export default function DashboardView() {
       {/* Header Strip with Live Status & Time */}
       <HeaderStrip />
 
-      {/* 8x KPI Metric Cards (Hardware Row + Financial/Energy Row) */}
+      {/* 5x Overview Metric Boxes */}
       <MetricCards roomsData={roomsData} liveData={liveData} />
 
       {/* Live AC Rooms Gauge Grid / Carousel */}
@@ -163,15 +162,12 @@ export default function DashboardView() {
         </div>
       </div>
 
-      {/* Middle Analytics Grid (Trend Chart, Room-wise Share, Today Summary) */}
+      {/* Middle Analytics Grid (Trend Chart & Today Summary) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 w-full box-border">
-        <div className="lg:col-span-6 min-w-0">
+        <div className="lg:col-span-8 min-w-0">
           <TrendChart />
         </div>
-        <div className="lg:col-span-3 min-w-0">
-          <RoomWiseShare roomsData={roomsData} />
-        </div>
-        <div className="lg:col-span-3 min-w-0">
+        <div className="lg:col-span-4 min-w-0">
           <TodaySummary />
         </div>
       </div>

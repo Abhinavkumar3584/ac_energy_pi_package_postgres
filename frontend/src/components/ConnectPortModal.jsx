@@ -159,7 +159,7 @@ export default function ConnectPortModal({ open, onClose, hubStatus, onRefreshSt
         <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs mb-5 flex justify-between items-center">
           <span className="text-slate-500 dark:text-slate-400 font-medium">Status:</span>
           <span className={`font-bold ${isConnected ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>
-            {isConnected ? `CONNECTED (${hubStatus?.port})` : 'DISCONNECTED'}
+            {isConnected ? 'GATEWAY ONLINE' : 'GATEWAY OFFLINE'}
           </span>
         </div>
 

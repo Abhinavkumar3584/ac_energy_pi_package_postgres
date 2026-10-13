@@ -1,60 +1,26 @@
 import React from 'react';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
-import CellTowerRoundedIcon from '@mui/icons-material/CellTowerRounded';
 import BatteryChargingFullRoundedIcon from '@mui/icons-material/BatteryChargingFullRounded';
 import CurrencyRupeeRoundedIcon from '@mui/icons-material/CurrencyRupeeRounded';
-import MeetingRoomRoundedIcon from '@mui/icons-material/MeetingRoomRounded';
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 
 export default function MetricCards({ roomsData, liveData }) {
-  // Calculations for hardware telemetry cards (Row 1)
-  const configuredRoomsCount = roomsData?.length ? (roomsData.length > 3 ? 3 : roomsData.length) : 3;
-  
+  // 1. Dashboard rooms
+  const dashboardRooms = roomsData?.filter((r) => r.dashboard !== false) || [];
+  const dashboardRoomsCount = dashboardRooms.length || roomsData?.length || 0;
+
+  // 2. Total power
   const liveRooms = liveData ? Object.values(liveData) : [];
-  const activeAcUnitsCount = liveRooms.filter((r) => (parseFloat(r.power) || 0) > 30).length;
-  const onlineNodesCount = liveRooms.length;
   const totalPowerWatts = liveRooms.reduce((acc, r) => acc + (parseFloat(r.power) || 0), 0);
 
-  // Row 1: Hardware & Live Load Telemetry (Clean Minimalist Cards)
-  const hardwareCards = [
-    {
-      title: 'DASHBOARD ROOMS',
-      value: `${configuredRoomsCount}`,
-      unit: '',
-      icon: <HomeRoundedIcon sx={{ fontSize: 22, color: '#2563EB' }} />,
-      iconBg: 'bg-blue-100/80 dark:bg-blue-900/40',
-    },
-    {
-      title: 'ACTIVE AC UNITS',
-      value: `${activeAcUnitsCount}`,
-      unit: '',
-      icon: <BoltRoundedIcon sx={{ fontSize: 22, color: '#EA580C' }} />,
-      iconBg: 'bg-orange-100/80 dark:bg-orange-900/40',
-    },
-    {
-      title: 'ONLINE NODES',
-      value: `${onlineNodesCount}`,
-      unit: '',
-      icon: <CellTowerRoundedIcon sx={{ fontSize: 22, color: '#8B5CF6' }} />,
-      iconBg: 'bg-purple-100/80 dark:bg-purple-900/40',
-    },
-    {
-      title: 'TOTAL POWER',
-      value: totalPowerWatts > 0 ? totalPowerWatts.toFixed(1) : '0.0',
-      unit: 'W',
-      unitColor: 'text-slate-500 dark:text-slate-400',
-      icon: <BatteryChargingFullRoundedIcon sx={{ fontSize: 22, color: '#10B981' }} />,
-      iconBg: 'bg-emerald-100/80 dark:bg-emerald-900/40',
-    },
-  ];
-
-  // Calculations for energy & financial KPI cards (Row 2)
+  // 3. Today's energy
   const calculatedKwh = roomsData
     ? roomsData.reduce((acc, r) => acc + (parseFloat(r.current_daily_kwh) || 0), 0)
-    : 248.5;
+    : 0;
   const displayKwh = calculatedKwh > 0 ? calculatedKwh.toFixed(1) : '248.5';
 
+  // 4. Today's cost
   const calculatedCost = roomsData
     ? roomsData.reduce((acc, r) => {
         const kwh = parseFloat(r.current_daily_kwh) || 0;
@@ -64,33 +30,45 @@ export default function MetricCards({ roomsData, liveData }) {
     : 3742;
   const displayCost = calculatedCost > 0 ? Math.round(calculatedCost).toLocaleString('en-IN') : '3,742';
 
-  // Row 2: Existing Energy & Financial KPIs (Clean Minimalist Cards)
-  const energyKpiCards = [
+  // 5. Month prediction
+  const projectedMonthlyCost = calculatedCost > 0
+    ? Math.round(calculatedCost * 30).toLocaleString('en-IN')
+    : '5,680';
+
+  // Five Overview Boxes
+  const overviewCards = [
     {
-      title: 'TOTAL ENERGY',
+      title: 'DASHBOARD ROOMS',
+      value: `${dashboardRoomsCount}`,
+      unit: '',
+      icon: <HomeRoundedIcon sx={{ fontSize: 22, color: '#2563EB' }} />,
+      iconBg: 'bg-blue-100/80 dark:bg-blue-900/40',
+    },
+    {
+      title: 'TOTAL POWER',
+      value: totalPowerWatts > 0 ? totalPowerWatts.toFixed(1) : '0.0',
+      unit: 'W',
+      unitColor: 'text-slate-500 dark:text-slate-400',
+      icon: <BatteryChargingFullRoundedIcon sx={{ fontSize: 22, color: '#10B981' }} />,
+      iconBg: 'bg-emerald-100/80 dark:bg-emerald-900/40',
+    },
+    {
+      title: "TODAY'S ENERGY",
       value: displayKwh,
       unit: 'kWh',
       icon: <BoltRoundedIcon sx={{ fontSize: 22, color: '#2563EB' }} />,
       iconBg: 'bg-blue-100/80 dark:bg-blue-900/40',
     },
     {
-      title: 'TOTAL COST',
+      title: "TODAY'S COST",
       value: `₹ ${displayCost}`,
       unit: '',
       icon: <CurrencyRupeeRoundedIcon sx={{ fontSize: 22, color: '#EA580C' }} />,
       iconBg: 'bg-orange-100/80 dark:bg-orange-900/40',
     },
     {
-      title: 'ACTIVE UNITS',
-      value: `${configuredRoomsCount} / 3`,
-      unit: 'Online',
-      unitColor: 'text-emerald-600 dark:text-emerald-400',
-      icon: <MeetingRoomRoundedIcon sx={{ fontSize: 22, color: '#2563EB' }} />,
-      iconBg: 'bg-indigo-100/80 dark:bg-indigo-900/40',
-    },
-    {
-      title: 'PROJECTED COST',
-      value: '₹ 5,680',
+      title: 'MONTH PREDICTION',
+      value: `₹ ${projectedMonthlyCost}`,
       unit: '',
       icon: <TrendingUpRoundedIcon sx={{ fontSize: 22, color: '#D97706' }} />,
       iconBg: 'bg-amber-100/80 dark:bg-amber-900/40',
@@ -104,7 +82,7 @@ export default function MetricCards({ roomsData, liveData }) {
     >
       {/* Top row with Title and Icon */}
       <div className="flex justify-between items-center mb-2">
-        <span className="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-wider uppercase">
+        <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 tracking-wider uppercase truncate">
           {card.title}
         </span>
         <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${card.iconBg}`}>
@@ -113,8 +91,8 @@ export default function MetricCards({ roomsData, liveData }) {
       </div>
 
       {/* Big Value */}
-      <div className="flex items-baseline gap-2">
-        <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-none">
+      <div className="flex items-baseline gap-1.5 flex-wrap">
+        <span className="text-xl sm:text-2xl lg:text-[26px] font-extrabold text-slate-900 dark:text-white tracking-tight leading-none">
           {card.value}
         </span>
         {card.unit && (
@@ -127,15 +105,9 @@ export default function MetricCards({ roomsData, liveData }) {
   );
 
   return (
-    <div className="flex flex-col gap-3.5 w-full box-border">
-      {/* Row 1: Hardware & Live Load Telemetry (4 Clean Glassmorphic Cards) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 w-full box-border">
-        {hardwareCards.map(renderCard)}
-      </div>
-
-      {/* Row 2: Energy & Cost KPI Cards (4 Clean Glassmorphic Cards) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 w-full box-border">
-        {energyKpiCards.map(renderCard)}
+    <div className="w-full box-border">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 w-full box-border">
+        {overviewCards.map(renderCard)}
       </div>
     </div>
   );

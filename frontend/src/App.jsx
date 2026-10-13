@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import Sidebar from './components/Sidebar';
 import TopNavbar from './components/TopNavbar';
@@ -15,7 +15,6 @@ import AutomationView from './components/views/AutomationView';
 import AlertsView from './components/views/AlertsView';
 import ReportsView from './components/views/ReportsView';
 import LiveEnergyView from './components/views/LiveEnergyView';
-import HistoryView from './components/views/HistoryView';
 import DevicesView from './components/views/DevicesView';
 import SettingsView from './components/views/SettingsView';
 
@@ -43,6 +42,18 @@ function MainLayout() {
     refreshBackend,
   } = useApp();
 
+  // Keyboard shortcut (Ctrl + K) opens search normally even without visible badge
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+        e.preventDefault();
+        setIsSearchModalOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [setIsSearchModalOpen]);
+
   return (
     <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden box-border relative z-10">
       {/* Fixed Modern Left Navigation Sidebar */}
@@ -58,9 +69,8 @@ function MainLayout() {
         {currentTab === 'analytics' && <AnalyticsView />}
         {currentTab === 'automation' && <AutomationView />}
         {currentTab === 'alerts' && <AlertsView />}
-        {currentTab === 'reports' && <ReportsView />}
+        {(currentTab === 'reports' || currentTab === 'history') && <ReportsView />}
         {currentTab === 'live' && <LiveEnergyView />}
-        {currentTab === 'history' && <HistoryView />}
         {currentTab === 'devices' && <DevicesView />}
         {currentTab === 'settings' && <SettingsView />}
       </main>

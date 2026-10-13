@@ -84,8 +84,11 @@ export default function DevicesView() {
         <div className="flex justify-between items-center mb-3.5 flex-wrap gap-3.5">
           <div>
             <h3 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white leading-tight">
-              ESP-01 Node Telemetry &amp; MAC Health
+              Node Module Health and Status
             </h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              Showing module health and status, Wi-Fi connectivity, and hardware telemetry.
+            </p>
           </div>
 
           <div className="relative w-full sm:w-64">

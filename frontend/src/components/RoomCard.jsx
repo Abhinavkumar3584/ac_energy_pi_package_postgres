@@ -12,13 +12,6 @@ export default function RoomCard({ room, reading, onOpenModal, onToggleRelay }) 
   const maxLoadKwh = limitKwh > 0 ? limitKwh : ((room.max_power || 2500) * 10) / 1000;
   const rawPct = (dailyKwh / maxLoadKwh) * 100;
   const displayPct = Math.min(100, Math.max(0, rawPct));
-  const dashOffset = (100 - displayPct).toFixed(1);
-
-  // Gauge Ring Color
-  let gaugeColor = '#10B981'; // Green
-  if (rawPct > 85) gaugeColor = '#EF4444'; // Red
-  else if (rawPct > 65) gaugeColor = '#F59E0B'; // Amber
-  else if (rawPct > 40) gaugeColor = '#3B82F6'; // Blue
 
   return (
     <div
@@ -45,41 +38,57 @@ export default function RoomCard({ room, reading, onOpenModal, onToggleRelay }) 
         </button>
       </div>
 
-      {/* SVG Circular Gauge */}
-      <div className="relative w-26 h-26 mx-auto my-1.5 flex items-center justify-center">
-        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
-          {/* Background track circle */}
-          <circle
-            cx="60"
-            cy="60"
-            r="44"
-            fill="none"
-            stroke="rgba(226, 232, 240, 0.8)"
-            strokeWidth="9"
-            pathLength="100"
-          />
-          {/* Foreground progress circle */}
-          <circle
-            cx="60"
-            cy="60"
-            r="44"
-            fill="none"
-            stroke={gaugeColor}
-            strokeWidth="9"
-            strokeLinecap="round"
-            strokeDasharray="100"
-            strokeDashoffset={dashOffset}
-            pathLength="100"
-            className="transition-all duration-700 ease-out"
-          />
-        </svg>
+      {/* Continuous Blended Conic Gauge (33% Green -> 33% Orange -> 33% Red) */}
+      <div className="relative w-28 h-28 mx-auto my-2 flex items-center justify-center">
+        {/* Soft Faded Guide Track (Whole 360-degree Blended Spectrum) */}
+        <div
+          className="absolute inset-0 rounded-full"
+          style={{
+            background:
+              'conic-gradient(from 0deg, #10B981 0%, #10B981 20%, #84CC16 33%, #F59E0B 50%, #F97316 66%, #EF4444 85%, #DC2626 100%)',
+            opacity: 0.18,
+          }}
+        />
 
-        {/* Center Info Inside Gauge */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-          <span className="text-xl font-black text-slate-800 dark:text-slate-100 leading-none tracking-tight">
+        {/* Active Vibrant Progress (Clipped by progress degrees) */}
+        {displayPct > 0 && (
+          <div
+            className="absolute inset-0 rounded-full transition-all duration-700 ease-out"
+            style={{
+              background:
+                'conic-gradient(from 0deg, #10B981 0%, #10B981 20%, #84CC16 33%, #F59E0B 50%, #F97316 66%, #EF4444 85%, #DC2626 100%)',
+              WebkitMask: `conic-gradient(#000 0deg, #000 ${displayPct * 3.6}deg, transparent ${displayPct * 3.6}deg 360deg)`,
+              mask: `conic-gradient(#000 0deg, #000 ${displayPct * 3.6}deg, transparent ${displayPct * 3.6}deg 360deg)`,
+            }}
+          />
+        )}
+
+        {/* Rounded Start Cap at Top (0% / 12 o'clock) */}
+        {displayPct > 0 && (
+          <div
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-[11px] h-[11px] rounded-full bg-[#10B981] shadow-xs z-10"
+          />
+        )}
+
+        {/* Rounded Leading Progress Tip */}
+        {displayPct > 1 && displayPct < 99 && (
+          <div
+            className="absolute w-[11px] h-[11px] rounded-full z-10 shadow-xs"
+            style={{
+              left: `${56 + 50.5 * Math.cos(((displayPct * 3.6 - 90) * Math.PI) / 180) - 5.5}px`,
+              top: `${56 + 50.5 * Math.sin(((displayPct * 3.6 - 90) * Math.PI) / 180) - 5.5}px`,
+              backgroundColor:
+                displayPct > 66 ? '#EF4444' : displayPct > 33 ? '#F97316' : '#10B981',
+            }}
+          />
+        )}
+
+        {/* Center Disc (Creates the clean hollow ring gauge) */}
+        <div className="absolute inset-[11px] rounded-full bg-white dark:bg-slate-900 flex flex-col items-center justify-center text-center shadow-xs z-20">
+          <span className="text-xl sm:text-2xl font-black text-slate-800 dark:text-slate-100 leading-none tracking-tight">
             {rawPct.toFixed(0)}%
           </span>
-          <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 mt-1 leading-tight">
+          <span className="text-xs font-bold text-slate-500 dark:text-slate-400 mt-1 leading-tight">
             {livePower.toFixed(0)} W
           </span>
         </div>

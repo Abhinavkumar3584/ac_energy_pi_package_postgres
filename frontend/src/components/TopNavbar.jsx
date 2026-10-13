@@ -67,15 +67,12 @@ export default function TopNavbar() {
             type="button"
             onClick={() => setIsSearchModalOpen(true)}
             className="w-full h-9 flex items-center gap-2.5 px-3 bg-slate-100/90 hover:bg-slate-200/90 dark:bg-slate-800/90 dark:hover:bg-slate-700/80 border border-slate-200/90 dark:border-slate-700/80 rounded-xl text-slate-500 dark:text-slate-400 text-xs font-semibold transition-all duration-200 cursor-pointer shadow-2xs group"
-            title="Search rooms, circuits, devices... (Ctrl + K)"
+            title="Search rooms, circuits, devices..."
           >
             <SearchRoundedIcon sx={{ fontSize: 18 }} className="text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex-shrink-0" />
             <span className="flex-1 text-left text-slate-500 dark:text-slate-400 font-medium truncate">
               Search rooms, circuits, devices, telemetry...
             </span>
-            <kbd className="hidden sm:inline-flex items-center text-[10px] bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded px-1.5 py-0.5 text-slate-600 dark:text-slate-300 font-mono font-bold shadow-2xs flex-shrink-0">
-              Ctrl + K
-            </kbd>
           </button>
         </div>
 
@@ -142,15 +139,15 @@ export default function TopNavbar() {
             <CloudDoneRoundedIcon sx={{ fontSize: 18, color: '#10B981' }} />
           </div>
 
-          {/* Connect Port CTA */}
+          {/* Gateway Status CTA */}
           <button
             type="button"
             onClick={() => setIsConnectModalOpen(true)}
-            className="h-8 inline-flex items-center gap-1 px-2.5 sm:px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-500/20 transition-all active:scale-95 flex-shrink-0"
-            title="Connect Hardware Port"
+            className="h-8 inline-flex items-center gap-1.5 px-2.5 sm:px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-500/20 transition-all active:scale-95 flex-shrink-0"
+            title="Gateway Connectivity Status"
           >
             <UsbRoundedIcon sx={{ fontSize: 16 }} />
-            <span className="hidden sm:inline">{isConnected && hubStatus?.port ? `Port: ${hubStatus.port}` : 'Connect Port'}</span>
+            <span className="hidden sm:inline">Gateway: {isConnected ? 'Online' : 'Offline'}</span>
           </button>
 
           {/* Admin Profile Dropdown */}

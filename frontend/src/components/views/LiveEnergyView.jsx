@@ -44,7 +44,7 @@ export default function LiveEnergyView() {
                 isConnected ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'
               }`}
             />
-            {isConnected ? `Connected: ${hubStatus.port || 'COM3'}` : 'Disconnected'}
+            {isConnected ? 'Gateway: Online' : 'Gateway: Offline'}
           </span>
         </div>
       </div>

@@ -52,7 +52,7 @@ export default function GlobalSearchModal({
     { label: 'Active Alerts', tab: 'alerts', icon: <NotificationsRoundedIcon sx={{ fontSize: 16 }} /> },
     { label: 'Energy & Billing Reports', tab: 'reports', icon: <AssessmentRoundedIcon sx={{ fontSize: 16 }} /> },
     { label: 'Live Serial Terminal', tab: 'live', icon: <DevicesRoundedIcon sx={{ fontSize: 16 }} /> },
-    { label: 'Energy Database Records', tab: 'history', icon: <AssessmentRoundedIcon sx={{ fontSize: 16 }} /> },
+    { label: 'Energy Database Records', tab: 'reports', icon: <AssessmentRoundedIcon sx={{ fontSize: 16 }} /> },
     { label: 'ESP-01 Devices & Nodes', tab: 'devices', icon: <DevicesRoundedIcon sx={{ fontSize: 16 }} /> },
     { label: 'Site Profile & Settings', tab: 'settings', icon: <SettingsRoundedIcon sx={{ fontSize: 16 }} /> },
   ].filter((s) => !q || s.label.toLowerCase().includes(q));

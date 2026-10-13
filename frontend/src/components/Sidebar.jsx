@@ -6,7 +6,6 @@ import AutoModeRoundedIcon from '@mui/icons-material/AutoModeRounded';
 import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import AssessmentRoundedIcon from '@mui/icons-material/AssessmentRounded';
 import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
-import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded';
 import DevicesRoundedIcon from '@mui/icons-material/DevicesRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
@@ -16,12 +15,10 @@ export default function Sidebar() {
   const {
     currentTab,
     setCurrentTab,
-    hubStatus,
     alerts,
     isMobileSidebarOpen,
     setIsMobileSidebarOpen,
   } = useApp();
-  const isOnline = hubStatus?.connected ?? true;
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: <DashboardRoundedIcon fontSize="small" /> },
@@ -36,7 +33,6 @@ export default function Sidebar() {
     },
     { id: 'reports', label: 'Reports', icon: <AssessmentRoundedIcon fontSize="small" /> },
     { id: 'live', label: 'Live Energy', icon: <BoltRoundedIcon fontSize="small" /> },
-    { id: 'history', label: 'Energy Records', icon: <HistoryRoundedIcon fontSize="small" /> },
     { id: 'devices', label: 'Devices', icon: <DevicesRoundedIcon fontSize="small" /> },
     { id: 'settings', label: 'Settings', icon: <SettingsRoundedIcon fontSize="small" /> },
   ];
@@ -102,30 +98,8 @@ export default function Sidebar() {
         })}
       </nav>
 
-      {/* Bottom Hardware Status & Footer */}
+      {/* Sidebar Footer */}
       <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-800 flex-shrink-0">
-        <div
-          className={`p-2.5 rounded-xl border flex items-center gap-2.5 mb-2.5 ${
-            isOnline
-              ? 'bg-emerald-50 border-emerald-300 text-black dark:bg-emerald-950/40 dark:border-emerald-800/60 dark:text-emerald-300'
-              : 'bg-rose-50 border-rose-300 text-black dark:bg-rose-950/40 dark:border-rose-800/60 dark:text-rose-300'
-          }`}
-        >
-          <span
-            className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${
-              isOnline ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'
-            }`}
-          />
-          <div className="min-w-0">
-            <p className="text-xs font-black text-black dark:text-white leading-tight truncate">
-              {isOnline ? 'ESP32 Hub Online' : 'Hub Disconnected'}
-            </p>
-            <p className={`text-[10px] font-black leading-tight ${isOnline ? 'text-emerald-950 dark:text-emerald-400' : 'text-rose-950 dark:text-rose-400'}`}>
-              {isOnline ? 'Port: ' + (hubStatus.port || 'COM3') : 'Check USB/COM Cable'}
-            </p>
-          </div>
-        </div>
-
         <p className="text-[10px] text-black dark:text-slate-300 font-black text-center leading-tight">
           Powered by SoCTeamup<br />Semiconductors Pvt. Ltd.
         </p>

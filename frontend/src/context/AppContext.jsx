@@ -219,7 +219,7 @@ const DEFAULT_ACTIVITY = [
     id: 'act-5',
     kind: 'ok',
     title: 'ESP-NOW Mesh Gateway Connected',
-    desc: 'Gateway /dev/ttyUSB0 (COM3) operational at 115,200 baud',
+    desc: 'Gateway operational and online at 115,200 baud',
     time: new Date(Date.now() - 1000 * 60 * 60).toISOString(),
   },
 ];
