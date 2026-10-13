@@ -5,7 +5,6 @@ import RoomCard from '../RoomCard';
 import TrendChart from '../TrendChart';
 import TodaySummary from '../TodaySummary';
 import RoomsOverviewTable from '../RoomsOverviewTable';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import { useApp } from '../../context/AppContext';
@@ -18,7 +17,6 @@ export default function DashboardView() {
     handleToggleRelay,
   } = useApp();
 
-  const [searchTerm, setSearchTerm] = useState('');
   const scrollContainerRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -27,14 +25,6 @@ export default function DashboardView() {
   const dashboardRooms = roomsData.filter(
     (r) => r.dashboard !== false
   );
-
-  const filteredRooms = dashboardRooms.filter((r) => {
-    const q = searchTerm.toLowerCase();
-    return (
-      r.room_name.toLowerCase().includes(q) ||
-      r.room_id.toLowerCase().includes(q)
-    );
-  });
 
   const checkScroll = useCallback(() => {
     const el = scrollContainerRef.current;
@@ -60,7 +50,7 @@ export default function DashboardView() {
       window.removeEventListener('resize', checkScroll);
       resizeObserver.disconnect();
     };
-  }, [filteredRooms, checkScroll]);
+  }, [dashboardRooms, checkScroll]);
 
   const handleScroll = (direction) => {
     const el = scrollContainerRef.current;
@@ -83,24 +73,11 @@ export default function DashboardView() {
 
       {/* Live AC Rooms Gauge Grid / Carousel */}
       <div className="glass-card p-3.5 w-full box-border relative">
-        <div className="flex justify-between items-center mb-3.5 flex-wrap gap-3.5">
+        <div className="flex justify-between items-center mb-3.5">
           <div className="flex items-center gap-2.5">
             <h3 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white leading-tight">
               Live Room Gauges
             </h3>
-          </div>
-
-          <div className="relative w-full sm:w-64">
-            <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-              <SearchRoundedIcon sx={{ fontSize: 18 }} />
-            </span>
-            <input
-              type="text"
-              placeholder="Search room name or ID..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 bg-slate-50/90 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-            />
           </div>
         </div>
 
@@ -125,7 +102,7 @@ export default function DashboardView() {
             ref={scrollContainerRef}
             className="flex gap-3.5 overflow-x-auto scroll-smooth no-scrollbar py-1 px-0.5 box-border"
           >
-            {filteredRooms.map((room) => (
+            {dashboardRooms.map((room) => (
               <div
                 key={room.room_id}
                 className="w-[270px] sm:w-[280px] lg:w-[calc((100%-56px)/5)] min-w-[210px] lg:min-w-[calc((100%-56px)/5)] lg:max-w-[calc((100%-56px)/5)] flex-shrink-0 box-border"
@@ -139,9 +116,9 @@ export default function DashboardView() {
               </div>
             ))}
 
-            {filteredRooms.length === 0 && (
+            {dashboardRooms.length === 0 && (
               <div className="w-full py-10 text-center text-slate-400 text-xs font-semibold">
-                No rooms match "{searchTerm}"
+                No rooms configured for dashboard view
               </div>
             )}
           </div>
