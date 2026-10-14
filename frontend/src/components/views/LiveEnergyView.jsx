@@ -8,7 +8,7 @@ import TerminalRoundedIcon from '@mui/icons-material/TerminalRounded';
 import { useApp } from '../../context/AppContext';
 
 export default function LiveEnergyView() {
-  const { hubStatus, serialLogs, setSerialLogs, refreshBackend } = useApp();
+  const { hubStatus, serialLogs, setSerialLogs, refreshBackend, updateHubStatus } = useApp();
 
   const [selectedPort, setSelectedPort] = useState(hubStatus.port || 'COM3');
   const [baudRate, setBaudRate] = useState(115200);
@@ -108,6 +108,7 @@ export default function LiveEnergyView() {
                 </button>
                 <button
                   type="button"
+                  onClick={() => updateHubStatus({ connected: !isConnected, port: selectedPort, baud: baudRate })}
                   className={`flex-1 py-2 px-3 rounded-xl font-bold text-xs text-white transition-all shadow-md ${
                     isConnected
                       ? 'bg-rose-600 hover:bg-rose-700 shadow-rose-500/20'

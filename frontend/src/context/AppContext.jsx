@@ -457,69 +457,93 @@ export function AppProvider({ children }) {
     'RX ← {"type":"energy","room_id":"ROOM_104","voltage":240.2,"current":3.48,"power":832.0,"energy":115.340,"pzem_ok":true}',
   ]);
 
-  // Fetch real backend API if running (optimized lightweight polling)
-  const refreshBackend = useCallback(async () => {
-    if (typeof document !== 'undefined' && document.hidden) return;
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 2000);
-
-    try {
-      const [resStatus, resControl, resLive, resPorts] = await Promise.allSettled([
-        fetch('/api/status', { cache: 'no-store', signal: controller.signal }),
-        fetch('/api/control', { cache: 'no-store', signal: controller.signal }),
-        fetch('/api/live', { cache: 'no-store', signal: controller.signal }),
-        fetch('/api/ports', { cache: 'no-store', signal: controller.signal }),
+  // Hub status updater for standalone frontend operation
+  const updateHubStatus = useCallback((updates) => {
+    setHubStatus((prev) => {
+      const next = { ...prev, ...updates };
+      return next;
+    });
+    if (updates.connected !== undefined) {
+      setActivityLogs((prev) => [
+        {
+          id: `act-${Date.now()}`,
+          kind: updates.connected ? 'ok' : 'warn',
+          title: updates.connected ? 'Hardware Hub Connected' : 'Hardware Hub Disconnected',
+          desc: updates.connected
+            ? `Gateway connected on ${updates.port || 'COM3'} at ${updates.baud || 115200} baud`
+            : 'Gateway serial connection closed',
+          time: new Date().toISOString(),
+        },
+        ...prev,
       ]);
-      clearTimeout(timeoutId);
-
-      if (resStatus.status === 'fulfilled' && resStatus.value.ok) {
-        const data = await resStatus.value.json();
-        if (data) setHubStatus((prev) => ({ ...prev, ...data }));
-      }
-
-      if (resPorts.status === 'fulfilled' && resPorts.value.ok) {
-        const data = await resPorts.value.json();
-        if (data?.ports) {
-          setHubStatus((prev) => ({ ...prev, ports: data.ports }));
-        }
-      }
-
-      if (resControl.status === 'fulfilled' && resControl.value.ok) {
-        const data = await resControl.value.json();
-        if (data?.rooms && data.rooms.length > 0) {
-          setRoomsData((prev) => {
-            const map = new Map(data.rooms.map((r) => [r.room_id, r]));
-            return prev.map((oldR) => (map.has(oldR.room_id) ? { ...oldR, ...map.get(oldR.room_id) } : oldR));
-          });
-        }
-      }
-
-      if (resLive.status === 'fulfilled' && resLive.value.ok) {
-        const data = await resLive.value.json();
-        if (data?.rooms && Object.keys(data.rooms).length > 0) {
-          setLiveData((prev) => ({ ...prev, ...data.rooms }));
-          const sample = Object.values(data.rooms)[0];
-          if (sample) {
-            setSerialLogs((logs) => [
-              `RX ← ${JSON.stringify(sample)}`,
-              ...logs.slice(0, 100),
-            ]);
-          }
-        }
-      }
-    } catch (e) {
-      // Graceful fallback to rich local state
     }
   }, []);
 
-  useEffect(() => {
-    refreshBackend();
-    const timer = setInterval(refreshBackend, 6000);
-    return () => clearInterval(timer);
-  }, [refreshBackend]);
+  // Standalone live simulation: fluctuates voltage and power slightly to keep frontend dynamic
+  const refreshBackend = useCallback(() => {
+    setLiveData((prev) => {
+      const updated = { ...prev };
+      const roomKeys = Object.keys(updated);
+      roomKeys.forEach((key) => {
+        const item = updated[key];
+        const vDelta = (Math.random() - 0.48) * 0.8;
+        const newV = Math.round(Math.max(235, Math.min(244, (item.voltage || 238) + vDelta)) * 10) / 10;
+        const pDelta = (Math.random() - 0.5) * 16;
+        const newP = Math.max(10, Math.round(((item.power || 500) + pDelta) * 10) / 10);
+        const newI = Math.round((newP / (newV * (item.pf || 0.95))) * 100) / 100;
+        const eInc = (newP / 3600000) * 4;
+        const newDailyE = Math.round(((item.daily_energy_kwh || 0) + eInc) * 1000) / 1000;
+        const newTotE = Math.round(((item.energy || 0) + eInc) * 1000) / 1000;
 
-  // Relay ON/OFF Handler
-  const handleToggleRelay = async (roomId, targetState) => {
+        updated[key] = {
+          ...item,
+          voltage: newV,
+          power: newP,
+          current: newI,
+          daily_energy_kwh: newDailyE,
+          energy: newTotE,
+          received_at: new Date().toISOString(),
+        };
+      });
+
+      // Sample packet into serial logs
+      if (roomKeys.length > 0) {
+        const randKey = roomKeys[Math.floor(Math.random() * roomKeys.length)];
+        const sample = updated[randKey];
+        if (sample) {
+          setSerialLogs((logs) => [
+            `RX ← ${JSON.stringify(sample)}`,
+            ...logs.slice(0, 80),
+          ]);
+        }
+      }
+
+      return updated;
+    });
+
+    // Sync room card energy
+    setRoomsData((prev) =>
+      prev.map((r) => {
+        const live = liveData[r.room_id];
+        if (live && live.daily_energy_kwh) {
+          return { ...r, current_daily_kwh: live.daily_energy_kwh.toFixed(3) };
+        }
+        return r;
+      })
+    );
+  }, [liveData]);
+
+  // Periodic simulation interval
+  useEffect(() => {
+    if (!hubStatus?.connected) return;
+    const timer = setInterval(() => {
+      refreshBackend();
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [hubStatus?.connected, refreshBackend]);
+
+  // Relay ON/OFF Handler (Standalone local control)
+  const handleToggleRelay = (roomId, targetState) => {
     const newState = (targetState || 'ON').toUpperCase();
     // Optimistic UI update
     setRoomsData((prev) =>
@@ -535,22 +559,16 @@ export function AppProvider({ children }) {
         id: `act-${Date.now()}`,
         kind: newState === 'ON' ? 'ok' : 'warn',
         title: `Relay Switched ${newState}`,
-        desc: `${roomName} (${roomId}) relay manually commanded ${newState}`,
+        desc: `${roomName} (${roomId}) relay commanded ${newState}`,
         time: new Date().toISOString(),
       },
       ...prev,
     ]);
 
-    // Send real command to backend
-    try {
-      await fetch('/api/relay', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ room_id: roomId, state: newState }),
-      });
-    } catch (e) {
-      console.warn('Backend offline, simulated locally:', e);
-    }
+    setSerialLogs((logs) => [
+      `TX → ${newState},${roomId}`,
+      ...logs.slice(0, 80),
+    ]);
   };
 
   // Add Room Handler
@@ -646,6 +664,8 @@ export function AppProvider({ children }) {
         roomsData,
         liveData,
         hubStatus,
+        setHubStatus,
+        updateHubStatus,
         historyData,
         activityLogs,
         alerts,

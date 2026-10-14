@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import UsbRoundedIcon from '@mui/icons-material/UsbRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import { useApp } from '../context/AppContext';
+
+const DEFAULT_PORTS = [
+  { device: 'COM3', description: 'Silicon Labs CP210x USB to UART Bridge (ESP32 Hub)' },
+  { device: 'COM4', description: 'CH340 USB Serial Adapter' },
+  { device: '/dev/ttyUSB0', description: 'ESP32 Gateway Node' },
+  { device: '/dev/ttyACM0', description: 'CDC Serial Gateway' },
+];
 
 export default function ConnectPortModal({ open, onClose, hubStatus, onRefreshStatus }) {
-  const [ports, setPorts] = useState([]);
-  const [selectedPort, setSelectedPort] = useState(hubStatus?.port || '');
+  const { updateHubStatus } = useApp();
+  const [ports, setPorts] = useState(DEFAULT_PORTS);
+  const [selectedPort, setSelectedPort] = useState(hubStatus?.port || 'COM3');
   const [baud, setBaud] = useState(hubStatus?.baud || 115200);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -16,25 +25,18 @@ export default function ConnectPortModal({ open, onClose, hubStatus, onRefreshSt
     if (open) {
       setErrorMsg('');
       setSuccessMsg('');
-      fetch('/api/ports')
-        .then((res) => res.json())
-        .then((data) => {
-          if (data && data.ports) {
-            setPorts(data.ports);
-            if (!selectedPort && data.ports.length > 0) {
-              setSelectedPort(data.ports[0].device);
-            }
-          }
-        })
-        .catch((err) => {
-          console.error('Failed to load ports:', err);
-        });
+      if (hubStatus?.port) {
+        setSelectedPort(hubStatus.port);
+      }
+      if (hubStatus?.baud) {
+        setBaud(hubStatus.baud);
+      }
     }
   }, [open, hubStatus]);
 
   if (!open) return null;
 
-  const handleConnect = async () => {
+  const handleConnect = () => {
     if (!selectedPort) {
       setErrorMsg('Please select a serial port.');
       return;
@@ -42,45 +44,37 @@ export default function ConnectPortModal({ open, onClose, hubStatus, onRefreshSt
     setLoading(true);
     setErrorMsg('');
     setSuccessMsg('');
-    try {
-      const res = await fetch('/api/connect', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ port: selectedPort, baud: Number(baud) }),
-      });
-      const data = await res.json();
-      if (res.ok && data.ok) {
-        setSuccessMsg(`Successfully connected to ${selectedPort}`);
-        if (onRefreshStatus) onRefreshStatus();
-        setTimeout(() => onClose(), 1200);
-      } else {
-        setErrorMsg(data.error || 'Failed to connect');
-      }
-    } catch (e) {
-      setErrorMsg(e.message || 'Connection error');
-    } finally {
+
+    setTimeout(() => {
       setLoading(false);
-    }
+      if (updateHubStatus) {
+        updateHubStatus({
+          connected: true,
+          port: selectedPort,
+          baud: Number(baud),
+        });
+      }
+      setSuccessMsg(`Successfully connected to ${selectedPort} at ${baud} baud`);
+      if (onRefreshStatus) onRefreshStatus();
+      setTimeout(() => onClose(), 900);
+    }, 400);
   };
 
-  const handleDisconnect = async () => {
+  const handleDisconnect = () => {
     setLoading(true);
     setErrorMsg('');
-    try {
-      const res = await fetch('/api/disconnect', { method: 'POST' });
-      const data = await res.json();
-      if (res.ok && data.ok) {
-        setSuccessMsg('Disconnected');
-        if (onRefreshStatus) onRefreshStatus();
-        setTimeout(() => onClose(), 1200);
-      } else {
-        setErrorMsg(data.error || 'Failed to disconnect');
-      }
-    } catch (e) {
-      setErrorMsg(e.message || 'Error disconnecting');
-    } finally {
+
+    setTimeout(() => {
       setLoading(false);
-    }
+      if (updateHubStatus) {
+        updateHubStatus({
+          connected: false,
+        });
+      }
+      setSuccessMsg('Disconnected from serial gateway');
+      if (onRefreshStatus) onRefreshStatus();
+      setTimeout(() => onClose(), 900);
+    }, 300);
   };
 
   return (
@@ -135,7 +129,6 @@ export default function ConnectPortModal({ open, onClose, hubStatus, onRefreshSt
                   {p.device} {p.description ? `(${p.description})` : ''}
                 </option>
               ))}
-              {ports.length === 0 && <option value="COM3">COM3 (Default)</option>}
             </select>
           </div>
 
